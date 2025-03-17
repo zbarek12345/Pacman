@@ -1,0 +1,5 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles/pacman.dir/main.cpp.obj: dyndep
+
+build CMakeFiles/pacman.dir/TileRender.cpp.obj: dyndep
+

@@ -1,0 +1,21 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "C:/Users/Wiktor/CLionProjects/pacman/cmake-build-debug",
+	"dir-cur-src" : "C:/Users/Wiktor/CLionProjects/pacman",
+	"dir-top-bld" : "C:/Users/Wiktor/CLionProjects/pacman/cmake-build-debug",
+	"dir-top-src" : "C:/Users/Wiktor/CLionProjects/pacman",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"C:\\msys64\\mingw64\\include\\SDL2"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/Wiktor/CLionProjects/pacman/cmake-build-debug/CMakeFiles/pacman.dir"
+}
