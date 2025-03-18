@@ -9,8 +9,10 @@
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_render.h>
+#include <vector>
 
 static int mapSize = 32;
+
 class TileRender {
 	struct tile {
 		unsigned char isWall: 1;
@@ -21,19 +23,21 @@ class TileRender {
 		unsigned char door:1;
 	};
 
-	SDL_Texture* texture = nullptr;
-	tile**map = nullptr;
+	SDL_Texture* _texture = nullptr;
+	SDL_Texture* _texture2 = nullptr;
+	int16_t _x_offset, _y_offset;
+	tile**_map = nullptr;
 
 	///Bottom, Right, Top, Left
-	SDL_Rect walls[4] = {
+	SDL_Rect _walls[4] = {
 		{0,0,8,8},
 		{8,0,8,8},
 		{16,0,8,8},
 		{24,0,8,8},
 	};
 
-	///LeftBottom, TopLeft, TopRight, BottomRight
-	SDL_Rect concave[4] = {
+	///TopLeft, BottomLeft, BottomRight, TopRight
+	SDL_Rect _concave[4] = {
 		{0,8,8,8},
 		{8,8,8,8},
 		{16,8,8,8},
@@ -41,16 +45,19 @@ class TileRender {
 	};
 
 	///TopLeft, BottomLeft, BottomRight, TopRight
-	SDL_Rect convex[4] {
+	SDL_Rect _convex[4] {
 		{0,16,8,8},
 		{8,16,8,8},
 		{16,16,8,8},
 		{24,16,8,8}
 	};
+	SDL_Rect _pointTexture = {32,0,16,16};
+	SDL_Rect _superPointTexture = {48,0,16,16};
+	std::vector<SDL_Rect> _points, _superPoints;
 
 public:
 
-	TileRender();
+		TileRender();
 
 	void LoadTexture(SDL_Renderer *renderer, std::string path);
 

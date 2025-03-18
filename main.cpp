@@ -1,8 +1,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <MenuState.h>
 
 #include "TileRender.h"
+#include "UI_Element/Button.h"
 
 // Tile dimensions
 const int TILE_SIZE = 8;
@@ -81,6 +83,10 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    if (!TTF_Init()) {
+        std::cerr << "Failed to initialize SDL_ttf: " << TTF_GetError() << std::endl;
+    }
+
     // Load the 32x32 tileset texture
     SDL_Texture* texture = loadTexture("../Textures/wallTiles.png", renderer);
     if (!texture) {
@@ -88,33 +94,39 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    auto tileRender = new TileRender();
-    std::string fileName = "../Example";
-    tileRender->readMap(fileName);
-    tileRender->LoadTexture(renderer, "../Textures/wallTiles.png");
-    // Main loop
+    // auto tileRender = new TileRender();
+    // std::string fileName = "../Levels/Lvl3";
+    // tileRender->readMap(fileName);
+    // tileRender->LoadTexture(renderer, "../Textures/wallTiles_white.png");
+    TTF_Font* font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
+    if (font == NULL) {
+        printf("Failed to load font: %s\n", TTF_GetError());
+    }
+
+    GameState* state = new MenuState(renderer);
+
     bool running = true;
     SDL_Event event;
     while (running) {
         while (SDL_PollEvent(&event)) {
+            state->handleInput(event, state);
             if (event.type == SDL_QUIT) {
                 running = false;
             }
         }
 
         // Clear the screen
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 255, 247, 92,255);
         SDL_RenderClear(renderer);
 
-        // Render the sub-textures
-        tileRender->renderMap(renderer);
-
+        state->render();
         // Present rendered content
         SDL_RenderPresent(renderer);
     }
 
-    delete tileRender;
+    //delete tileRender;
     // Cleanup
+    TTF_CloseFont(font);
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

@@ -5,9 +5,9 @@
 #include "TileRender.h"
 
 TileRender::TileRender() {
-	map = new tile*[mapSize];
+	_map = new tile*[mapSize];
 	for (int i = 0; i < mapSize; i++) {
-		map[i] = new tile[mapSize];
+		_map[i] = new tile[mapSize];
 	}
 }
 
@@ -16,8 +16,13 @@ void TileRender::LoadTexture(SDL_Renderer* renderer,std::string path) {
 	if (!tempSurface) {
 		std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
 	}
-	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-	SDL_FreeSurface(tempSurface);
+	_texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+
+	tempSurface = IMG_Load("../Textures/tileset.png");
+	if (!tempSurface) {
+		std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
+	}
+	_texture2 = SDL_CreateTextureFromSurface(renderer, tempSurface);
 }
 
 void TileRender::readMap(std::string &fileName) {
@@ -26,7 +31,7 @@ void TileRender::readMap(std::string &fileName) {
 	char c;
 
 	for (int i =0;i<mapSize;i++) {
-		memset(map[i], 0, sizeof(tile) * mapSize);
+		memset(_map[i], 0, sizeof(tile) * mapSize);
 	}
 
 	for (int i = 0; i < mapSize; i++) {
@@ -36,10 +41,15 @@ void TileRender::readMap(std::string &fileName) {
 				j--;
 				continue;
 			}
-			if (c == '#' || c=='P')
-				map[i][j].isWall = 1;
-			else
-				map[i][j].isWall = 0;
+			if (c == '#' || c=='p')
+				_map[i][j].isWall = 1;
+			else {
+				_map[i][j].isWall = 0;
+				if (c=='-')
+					_points.push_back({j*24,i*24,24,24});
+				else if (c=='x')
+					_superPoints.push_back({j*24,i*24,24,24});
+			}
 
 			printf("%c", c);
 		}
@@ -49,23 +59,23 @@ void TileRender::readMap(std::string &fileName) {
 	for (int i = 0; i < mapSize; i++) {
 		for (int j = 0; j < mapSize; j++) {
 			if (i > 0) {
-				if (map[i - 1][j].isWall) {
-					map[i][j].top = map[i - 1][j].isWall;
+				if (_map[i - 1][j].isWall) {
+					_map[i][j].top = _map[i - 1][j].isWall;
 				}
 			}
 			if (j > 0) {
-				if (map[i][j - 1].isWall) {
-					map[i][j].left = map[i][j - 1].isWall;
+				if (_map[i][j - 1].isWall) {
+					_map[i][j].left = _map[i][j - 1].isWall;
 				}
 			}
 			if (i < mapSize - 1) {
-				if (map[i + 1][j].isWall) {
-					map[i][j].bottom = map[i + 1][j].isWall;
+				if (_map[i + 1][j].isWall) {
+					_map[i][j].bottom = _map[i + 1][j].isWall;
 				}
 			}
 			if (j < mapSize - 1) {
-				if (map[i][j + 1].isWall) {
-					map[i][j].right = map[i][j + 1].isWall;
+				if (_map[i][j + 1].isWall) {
+					_map[i][j].right = _map[i][j + 1].isWall;
 				}
 			}
 		}
@@ -84,19 +94,19 @@ void TileRender::DrawTile(SDL_Renderer* renderer, tile* tile, int x, int y) {
 			///Draw Corners
 			///TopLeft
 			dst = {x,y,8,8};
-			SDL_RenderCopy(renderer,texture, &convex[0], &dst);
+			SDL_RenderCopy(renderer,_texture, &_convex[0], &dst);
 
 			///TopRight
 			dst = {x+16,y,8,8};
-			SDL_RenderCopy(renderer,texture, &convex[3], &dst);
+			SDL_RenderCopy(renderer,_texture, &_convex[3], &dst);
 
 			///BottomRight
 			dst = {x+16,y+16,8,8};
-			SDL_RenderCopy(renderer,texture, &convex[2], &dst);
+			SDL_RenderCopy(renderer,_texture, &_convex[2], &dst);
 
 			///BottomLeft
 			dst = {x,y+16,8,8};
-			SDL_RenderCopy(renderer,texture, &convex[1], &dst);
+			SDL_RenderCopy(renderer,_texture, &_convex[1], &dst);
 		}
 
 		//Endpoint Situation
@@ -105,117 +115,275 @@ void TileRender::DrawTile(SDL_Renderer* renderer, tile* tile, int x, int y) {
 				SDL_Rect dst;
 				///TopLeft
 				dst = {x,y,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[1], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
 
 				///TopRight
 				dst = {x+16,y,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[3], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
 
 				///BottomRight
 				dst = {x+16,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[2], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[2], &dst);
 
 				///BottomLeft
 				dst = {x,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[1], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[1], &dst);
 			}
 			else if (tile->bottom) {
 				SDL_Rect dst;
 				///TopLeft
 				dst = {x,y,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[0], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[0], &dst);
 
 				///TopRight
 				dst = {x+16,y,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[3], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[3], &dst);
 
 				///BottomRight
 				dst = {x+16,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[3], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
 
 				///BottomLeft
 				dst = {x,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[1], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
 			}
 			else if (tile->left) {
 				SDL_Rect dst;
 				///TopLeft
 				dst = {x,y,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[2], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
 
 				///TopRight
 				dst = {x+16,y,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[3], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[3], &dst);
 
 				///BottomRight
 				dst = {x+16,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[2], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[2], &dst);
 
 				///BottomLeft
 				dst = {x,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[0], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
 			}
 			else {
 				SDL_Rect dst;
 				///TopLeft
 				dst = {x,y,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[0], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[0], &dst);
 
 				///TopRight
 				dst = {x+16,y,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[2], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
 
 				///BottomRight
 				dst = {x+16,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &walls[0], &dst);
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
 
 				///BottomLeft
 				dst = {x,y+16,8,8};
-				SDL_RenderCopy(renderer,texture, &convex[1], &dst);
+				SDL_RenderCopy(renderer,_texture, &_convex[1], &dst);
 			}
 		}
 
-		else {
-			SDL_Rect dst;
-			///TopLeft
-			dst = {x,y,8,8};
-			SDL_RenderCopy(renderer,texture, &walls[0], &dst);
 
-			///TopRight
-			dst = {x+16,y,8,8};
-			SDL_RenderCopy(renderer,texture, &walls[3], &dst);
+		// //Either line - 1 thick or edge (Convex)
+		else if (boundCT==2) {
+			///Verrtical Line
+			if (tile->top && tile->bottom) {
+				SDL_Rect dst;
+				///TopLeft
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
 
-			///BottomRight
-			dst = {x+16,y+16,8,8};
-			SDL_RenderCopy(renderer,texture, &walls[2], &dst);
+				///TopRight
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
 
-			///BottomLeft
-			dst = {x,y+16,8,8};
-			SDL_RenderCopy(renderer,texture, &walls[1], &dst);
+				///BottomRight
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
+
+				///BottomLeft
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
+			}
+			///Horizontal Line
+			else if (tile->left && tile->right) {
+				SDL_Rect dst;
+				///TopLeft
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+
+				///TopRight
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+
+				///BottomRight
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
+
+				///BottomLeft
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
+			}
+
+			///Top Left
+			else if (tile->top && tile->left) {
+				SDL_Rect dst;
+				///Skipping Top Left Corner
+
+				///TopRight
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
+
+				///BottomRight
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_convex[2], &dst);
+
+				///BottomLeft
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
+			}
+
+			///Top Right
+			else if (tile->top && tile->right) {
+				SDL_Rect dst;
+				///TopLeft
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
+
+				///Skipping TopRight
+
+				///BottomRight
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
+
+				///BottomLeft
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_convex[1], &dst);
+			}
+
+			///Bottom Left
+			else if (tile->bottom && tile->left) {
+				SDL_Rect dst;
+				///TopLeft
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+
+				///TopRight
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_convex[3], &dst);
+
+				///BottomRight
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
+
+				/// Skipping BottomLeft
+			}
+
+			///Bottom Right
+			else if (tile->bottom && tile->right) {
+				SDL_Rect dst;
+				///TopLeft
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_convex[0], &dst);
+
+				///TopRight
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+
+				///Skipping BottomRight
+
+				///BottomLeft
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
+			}
 		}
-		// //Either line - 1 thick or edge (Convex)
-		// else if (boundCT==2) {
-		//
-		// }
-		//
-		// //Either line - 1 thick or edge (Convex)
-		// else if (boundCT==3) {
-		//
-		// }
+
+		else if (boundCT==3){
+			SDL_Rect dst;
+			if (!tile->top) {
+				///Top Left
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+				///Top Left
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+			}
+			if (!tile->bottom) {
+				///Top Left
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
+				///Top Left
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[0], &dst);
+			}
+
+			if (!tile->left) {
+				///Top Left
+				dst = {x,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
+				///Top Left
+				dst = {x,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[3], &dst);
+			}
+
+			if (!tile->right) {
+				///Top Left
+				dst = {x+16,y,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
+				///Top Left
+				dst = {x+16,y+16,8,8};
+				SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
+			}
+		}
 
 		SDL_Rect dst;
+
 		///Bottom
-		dst = {x+8,y+16,8,8};
-		SDL_RenderCopy(renderer,texture, &walls[0], &dst);
+		if (!tile->bottom) {
+			dst = {x + 8, y + 16, 8, 8};
+			SDL_RenderCopy(renderer, _texture, &_walls[0], &dst);
+		}
 		///Left
-		dst = {x,y+8,8,8};
-		SDL_RenderCopy(renderer,texture, &walls[1], &dst);
+		if (!tile->left) {
+			dst = {x, y + 8, 8, 8};
+			SDL_RenderCopy(renderer, _texture, &_walls[3], &dst);
+		}
+
 		///Top
-		dst = {x+8,y,8,8};
-		SDL_RenderCopy(renderer,texture, &walls[2], &dst);
+		if (!tile->top) {
+			dst = {x + 8, y, 8, 8};
+			SDL_RenderCopy(renderer,_texture, &_walls[2], &dst);
+		}
+
 		///Right
-		dst = {x+16,y+8,8,8};
-		SDL_RenderCopy(renderer,texture, &walls[3], &dst);
+		if (!tile->right) {
+			dst = {x+16,y+8,8,8};
+			SDL_RenderCopy(renderer,_texture, &_walls[1], &dst);
+		}
+	}
+	else {
+		if (tile->top && tile->left) {
+			SDL_Rect dst;
+			dst = {x-8, y-8, 8, 8};
+			SDL_RenderCopy(renderer, _texture, &_concave[0], &dst);
+		}
+		if (tile->top&&tile->right) {
+			SDL_Rect dst;
+			dst = {x+24, y-8, 8, 8};
+			SDL_RenderCopy(renderer, _texture, &_concave[3], &dst);
+		}
+		if (tile->bottom&&tile->left) {
+			SDL_Rect dst;
+			dst = {x-8, y+24, 8, 8};
+			SDL_RenderCopy(renderer, _texture, &_concave[1], &dst);
+		}
+		if (tile->bottom&&tile->right) {
+			SDL_Rect dst;
+			dst = {x+24, y+24, 8, 8};
+			SDL_RenderCopy(renderer, _texture, &_concave[2], &dst);
+		}
 	}
 }
 
@@ -223,18 +391,21 @@ void TileRender::renderMap(SDL_Renderer* renderer) {
 	SDL_SetRenderDrawColor(renderer, 100, 30, 144, 255);
 	for (int i = 0; i < mapSize; i++) {
 		for (int j = 0; j < mapSize; j++) {
-			if (map[i][j].isWall) {
-				DrawTile(renderer, &map[i][j], j * 24, i * 24);
-			}
+			DrawTile(renderer, &_map[i][j], j * 24, i * 24);
 		}
 	}
+
+	for (auto& e: _points)
+		SDL_RenderCopy(renderer, _texture2, &_pointTexture, &e);
+	for (auto& e: _superPoints)
+		SDL_RenderCopy(renderer, _texture2, &_superPointTexture, &e);
 }
 
 TileRender::~TileRender() {
-	if (texture!=nullptr)
-		SDL_DestroyTexture(texture);
+	if (_texture!=nullptr)
+		SDL_DestroyTexture(_texture);
 	for (int i = 0; i < mapSize; i++) {
-		delete[] map[i];
+		delete[] _map[i];
 	}
-	delete[] map;
+	delete[] _map;
 }
