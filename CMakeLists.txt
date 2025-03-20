@@ -15,14 +15,17 @@ add_executable(pacman
         main.cpp
         TileRender.cpp
         TileRender.h
-        Game.cpp
-        Game.h
+        States/Game.cpp
+        States/Game.h
         States/MenuState.cpp
         UI_Element/Button.cpp
         UI_Element/Button.h
         UI_Element/UiElement.h
         UI_Element/Image.cpp
         UI_Element/Image.h
+        UI_Element/ScrollableList.cpp
+        UI_Element/ScrollableList.h
+        States/testState.cpp
 )
 
 # Include SDL2 and SDL2_image directories for this target

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <MenuState.h>
 
+#include "States/Game.h"
 #include "TileRender.h"
 #include "UI_Element/Button.h"
 
@@ -103,26 +104,26 @@ int main(int argc, char* argv[]) {
         printf("Failed to load font: %s\n", TTF_GetError());
     }
 
-    GameState* state = new MenuState(renderer);
-
-    bool running = true;
-    SDL_Event event;
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            state->handleInput(event, state);
-            if (event.type == SDL_QUIT) {
-                running = false;
-            }
-        }
-
-        // Clear the screen
-        SDL_SetRenderDrawColor(renderer, 255, 247, 92,255);
-        SDL_RenderClear(renderer);
-
-        state->render();
-        // Present rendered content
-        SDL_RenderPresent(renderer);
-    }
+    Game game = Game(window, renderer);
+    Game::run();
+    // bool running = true;
+    // SDL_Event event;
+    // while (running) {
+    //     while (SDL_PollEvent(&event)) {
+    //         state->handleInput(event, state);
+    //         if (event.type == SDL_QUIT) {
+    //             running = false;
+    //         }
+    //     }
+    //
+    //     // Clear the screen
+    //     SDL_SetRenderDrawColor(renderer, 255, 255, 255,255);
+    //     SDL_RenderClear(renderer);
+    //
+    //     //state->render();
+    //     // Present rendered content
+    //     SDL_RenderPresent(renderer);
+    // }
 
     //delete tileRender;
     // Cleanup

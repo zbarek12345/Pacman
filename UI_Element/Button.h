@@ -15,7 +15,6 @@
 
 class Button : public UiElement {
 	uint8_t _borderWidth = 1;
-	SDL_Rect _coordinates{};
 	SDL_Texture* _texture;
 	SDL_Color _color{}, _baseColor{}, _borderColor{}, _hoverColor{}, _clickedColor{};
 	void(*_onClick)() = nullptr;

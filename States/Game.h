@@ -16,13 +16,17 @@ class Game {
 		GAME,
 		GAME_OVER,
 	};
-	SDL_Renderer* renderer;
-	GameStates _state;
-	GameState* _currentState;
+	static GameStates _state;
+	static GameState* _currentState;
 	static int _speed;
 	static int _volume;
+public:
+	Game(SDL_Window* window, SDL_Renderer* renderer);
 
-	void run();
+	static SDL_Window* _window;
+	static SDL_Renderer* _renderer;
+
+	static void run();
 
 	Game();
 	~Game();

@@ -122,10 +122,6 @@ void Button::setFont(TTF_Font* font) {
 	_font = font;
 }
 
-void Button::setCoordinates(int32_t x, int32_t y, int32_t w, int32_t h) {
-	_coordinates = {x, y, w, h};
-}
-
 void Button::setColor(SDL_Color color) {
 	_baseColor = color;
 }
@@ -160,10 +156,6 @@ void Button::setOnClickColor(SDL_Color color) {
 
 void Button::setTexture(SDL_Texture* texture) {
 	_texture = texture;
-}
-
-SDL_Rect Button::getCoordinates() const {
-	return _coordinates;
 }
 
 SDL_Color Button::getColor() const {

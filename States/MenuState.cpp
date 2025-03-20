@@ -8,10 +8,13 @@
 
 
 MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
-	auto img = new Image({0, 0, 670, 670});
-	auto Play = new Button({600, 250, 100, 100});
+	auto img = new Image();
+	img->setCoordinatesf(0.1,0.1,0.8,0.4);
+	auto Play = new Button();
+	Play->setCoordinatesf(0.3,0.55,0.4,0.15);
 	SDL_Color normal = {137, 209, 54}, hover = {111, 191, 19}, pressed = {74, 138, 0};
-	auto Exit = new Button({600, 400, 100, 100});
+	auto Exit = new Button();
+	Exit->setCoordinatesf(0.3,0.75,0.4,0.15);
 
 	Play->setColor(normal);Exit->setColor(normal);
 	Play->setHoverColor(hover);Exit->setHoverColor(hover);
