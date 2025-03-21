@@ -73,8 +73,7 @@ void Button::render(SDL_Renderer* renderer) {
 
 	///Draw the Texture
 	if (_texture != nullptr) {
-		SDL_Rect textureCoordinates = {0, 0, _coordinates.w, _coordinates.h};
-		SDL_RenderCopy(renderer, _texture, &textureCoordinates, &_coordinates);
+		SDL_RenderCopy(renderer, _texture, nullptr, &_coordinates);
 	}
 }
 
@@ -97,15 +96,15 @@ bool operator!=(const SDL_Color & lhs, const SDL_Color & rhs) {
 void Button::handleInput(SDL_Event& event) {
 	if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT && isInside({event.button.x, event.button.y})) {
 		_color = _clickedColor;
-		_text = "clicked";
+		//_text = "clicked";
 		if (_onClick != nullptr) _onClick();
 	}
 	else if (isInside({event.button.x, event.button.y})) {
-		_text = "hovered";
+		//_text = "hovered";
 		_color = _hoverColor;
 	}
 	else {
-		_text = "normal";
+		//_text = "normal";
 		_color = _baseColor;
 	}
 }

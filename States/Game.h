@@ -5,9 +5,11 @@
 #ifndef GAME_H
 #define GAME_H
 #include <GameState.h>
+#include <SDL_ttf.h>
 
 
 class Game {
+public:
 	enum GameStates {
 		MENU,
 		LEVEL_SELECT,
@@ -20,7 +22,8 @@ class Game {
 	static GameState* _currentState;
 	static int _speed;
 	static int _volume;
-public:
+	static TTF_Font* _font;
+
 	Game(SDL_Window* window, SDL_Renderer* renderer);
 
 	static SDL_Window* _window;

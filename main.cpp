@@ -99,10 +99,6 @@ int main(int argc, char* argv[]) {
     // std::string fileName = "../Levels/Lvl3";
     // tileRender->readMap(fileName);
     // tileRender->LoadTexture(renderer, "../Textures/wallTiles_white.png");
-    TTF_Font* font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
-    if (font == NULL) {
-        printf("Failed to load font: %s\n", TTF_GetError());
-    }
 
     Game game = Game(window, renderer);
     Game::run();
@@ -127,7 +123,7 @@ int main(int argc, char* argv[]) {
 
     //delete tileRender;
     // Cleanup
-    TTF_CloseFont(font);
+    //TTF_CloseFont(font);
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

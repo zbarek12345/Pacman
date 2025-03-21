@@ -5,6 +5,8 @@
 #include "Game.h"
 
 #include <MenuState.h>
+
+#include "LevelSelectState.h"
 #include "TestState.cpp"
 
 Game::GameStates Game::_state = Game::MENU;  // Initialize to MENU or any other default state
@@ -13,15 +15,18 @@ int Game::_speed = 0;                       // Default value for _speed
 int Game::_volume = 0;                      // Default value for _volume
 SDL_Window* Game::_window = nullptr;        // Initialize to nullptr
 SDL_Renderer* Game::_renderer = nullptr;
+TTF_Font* Game::_font = nullptr;
 
 Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_window = window;
 	_renderer = renderer;
-	_currentState = new TestState(renderer);
+	_currentState = new MenuState(renderer);
+	_font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
 }
 
 Game::~Game() {
 	delete _currentState;
+	TTF_CloseFont(_font);
 }
 
 

@@ -98,8 +98,15 @@ build CMakeFiles/pacman.dir/UI_Element/ScrollableList.cpp.obj: CXX_COMPILER__pac
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
-build CMakeFiles/pacman.dir/States/testState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/testState.cpp || cmake_object_order_depends_target_pacman
-  DEP_FILE = CMakeFiles\pacman.dir\States\testState.cpp.obj.d
+build CMakeFiles/pacman.dir/States/TestState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/TestState.cpp || cmake_object_order_depends_target_pacman
+  DEP_FILE = CMakeFiles\pacman.dir\States\TestState.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -isystem C:/msys64/mingw64/include/SDL2
+  OBJECT_DIR = CMakeFiles\pacman.dir
+  OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
+
+build CMakeFiles/pacman.dir/States/LevelSelectState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/LevelSelectState.cpp || cmake_object_order_depends_target_pacman
+  DEP_FILE = CMakeFiles\pacman.dir\States\LevelSelectState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
@@ -113,7 +120,7 @@ build CMakeFiles/pacman.dir/States/testState.cpp.obj: CXX_COMPILER__pacman_unsca
 #############################################
 # Link the executable pacman.exe
 
-build pacman.exe: CXX_EXECUTABLE_LINKER__pacman_Debug CMakeFiles/pacman.dir/main.cpp.obj CMakeFiles/pacman.dir/TileRender.cpp.obj CMakeFiles/pacman.dir/States/Game.cpp.obj CMakeFiles/pacman.dir/States/MenuState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Button.cpp.obj CMakeFiles/pacman.dir/UI_Element/Image.cpp.obj CMakeFiles/pacman.dir/UI_Element/ScrollableList.cpp.obj CMakeFiles/pacman.dir/States/testState.cpp.obj | C$:/msys64/mingw64/lib/libSDL2main.a C$:/msys64/mingw64/lib/libSDL2.dll.a C$:/msys64/mingw64/lib/libSDL2_image.dll.a C$:/msys64/mingw64/lib/libSDL2_ttf.dll.a
+build pacman.exe: CXX_EXECUTABLE_LINKER__pacman_Debug CMakeFiles/pacman.dir/main.cpp.obj CMakeFiles/pacman.dir/TileRender.cpp.obj CMakeFiles/pacman.dir/States/Game.cpp.obj CMakeFiles/pacman.dir/States/MenuState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Button.cpp.obj CMakeFiles/pacman.dir/UI_Element/Image.cpp.obj CMakeFiles/pacman.dir/UI_Element/ScrollableList.cpp.obj CMakeFiles/pacman.dir/States/TestState.cpp.obj CMakeFiles/pacman.dir/States/LevelSelectState.cpp.obj | C$:/msys64/mingw64/lib/libSDL2main.a C$:/msys64/mingw64/lib/libSDL2.dll.a C$:/msys64/mingw64/lib/libSDL2_image.dll.a C$:/msys64/mingw64/lib/libSDL2_ttf.dll.a
   FLAGS = -g
   LINK_LIBRARIES = C:/msys64/mingw64/lib/libSDL2main.a  C:/msys64/mingw64/lib/libSDL2.dll.a  C:/msys64/mingw64/lib/libSDL2_image.dll.a  C:/msys64/mingw64/lib/libSDL2_ttf.dll.a  -lshell32  -Wl,--undefined=WinMain  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\pacman.dir

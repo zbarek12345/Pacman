@@ -26,6 +26,8 @@ add_executable(pacman
         UI_Element/ScrollableList.cpp
         UI_Element/ScrollableList.h
         States/testState.cpp
+        States/LevelSelectState.cpp
+        States/LevelSelectState.h
 )
 
 # Include SDL2 and SDL2_image directories for this target

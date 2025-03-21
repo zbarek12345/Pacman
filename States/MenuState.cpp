@@ -6,6 +6,9 @@
 
 #include <SDL_image.h>
 
+#include "LevelSelectState.h"
+
+GameState* next = nullptr;
 
 MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	auto img = new Image();
@@ -16,6 +19,8 @@ MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	auto Exit = new Button();
 	Exit->setCoordinatesf(0.3,0.75,0.4,0.15);
 
+	Play->setFont(Game::_font);Exit->setFont(Game::_font);
+
 	Play->setColor(normal);Exit->setColor(normal);
 	Play->setHoverColor(hover);Exit->setHoverColor(hover);
 	Play->setOnClickColor(pressed);Exit->setOnClickColor(pressed);
@@ -25,6 +30,7 @@ MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	img->setTexture(SDL_CreateTextureFromSurface(_renderer, surface));
 	SDL_FreeSurface(surface);
 
+	Play->onClick([](){next = new LevelSelectState(Game::_renderer);});
 	_children.push_back(img);
 	_children.push_back(Play);
 	_children.push_back(Exit);
@@ -42,8 +48,16 @@ void MenuState::render() {
 		e->render(_renderer);
 	}
 }              // Draw the state to the screen
+
+
 void MenuState::handleInput(SDL_Event& event, GameState*& nextState) {
 	for (auto& e: _children) {
 		e->handleInput(event);
+	}
+
+	if (next != nullptr){
+		GameState *cstate = nextState;
+		nextState = next;
+		delete cstate;
 	}
 }
