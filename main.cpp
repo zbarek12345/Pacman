@@ -19,7 +19,7 @@ bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
     *window = SDL_CreateWindow("SDL2 Texture Demo",
                                SDL_WINDOWPOS_CENTERED,
                                SDL_WINDOWPOS_CENTERED,
-                               1080, 900,
+                             1080, 900,
                                SDL_WINDOW_SHOWN);
     if (!*window) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;

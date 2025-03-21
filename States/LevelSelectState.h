@@ -8,14 +8,19 @@
 #include <vector>
 
 #include "Button.h"
+#include "Image.h"
 
 
 class LevelSelectState : public GameState{
+	Image* _levelPreview;
 	Button* _button,* _leftButton,* _rightButton;
-	std::vector<std::string> _levels;
+	std::vector<std::string> _levels, _paths;
 public:
 
 	LevelSelectState(SDL_Renderer* renderer);
+
+	void renderPreview();
+
 	~LevelSelectState() override;
 
 	void update() override;
