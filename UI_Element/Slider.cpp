@@ -100,6 +100,7 @@ void Slider::handleInput(SDL_Event &event) {
 			}
 			_held = true;
 			printf("%d\n", _value);
+			_value = std::max(_min, std::min(_value, _max));
 		}
 		else {
 			_selected = false;
@@ -112,6 +113,8 @@ void Slider::handleInput(SDL_Event &event) {
 		else {
 			_value = (int) (((event.motion.x - _coordinates.x) / (float) _coordinates.w) * (_max - _min) + _min);
 		}
+		_value = std::max(_min, std::min(_value, _max));
+		printf("%d\n", _value);
 	}
 	else if (event.type == SDL_MOUSEBUTTONUP) {
 		_held = false;
@@ -123,7 +126,6 @@ void Slider::handleInput(SDL_Event &event) {
 		else if (event.key.keysym.sym == SDLK_RIGHT) {
 			_value = std::min(_value+1, _max);
 		}
-
 		printf("%d\n", _value);
 	}
 

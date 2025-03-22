@@ -39,3 +39,11 @@
 11	857	7643480238280663	CMakeFiles/pacman.dir/States/TestState.cpp.obj	5730fcf9f021b33d
 7	931	7643480238230711	CMakeFiles/pacman.dir/States/Game.cpp.obj	42677adb18deb966
 931	1068	7643480247474968	pacman.exe	bdb577ea7bbdbc2f
+7	692	7643482748803921	CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj	54a54a88b58eafd7
+693	866	7643482755665998	pacman.exe	bdb577ea7bbdbc2f
+6	665	7643483951593730	CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj	54a54a88b58eafd7
+665	796	7643483958183524	pacman.exe	bdb577ea7bbdbc2f
+15	658	7643484167824671	CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj	54a54a88b58eafd7
+659	791	7643484174258011	pacman.exe	bdb577ea7bbdbc2f
+15	648	7643484384032009	CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj	54a54a88b58eafd7
+648	779	7643484390359567	pacman.exe	bdb577ea7bbdbc2f
