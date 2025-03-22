@@ -28,6 +28,8 @@ add_executable(pacman
         States/testState.cpp
         States/LevelSelectState.cpp
         States/LevelSelectState.h
+        UI_Element/Slider.cpp
+        UI_Element/Slider.h
 )
 
 # Include SDL2 and SDL2_image directories for this target

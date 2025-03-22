@@ -20,7 +20,7 @@ TTF_Font* Game::_font = nullptr;
 Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_window = window;
 	_renderer = renderer;
-	_currentState = new MenuState(renderer);
+	_currentState = new TestState(renderer);
 	_font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
 }
 

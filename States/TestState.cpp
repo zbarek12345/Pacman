@@ -8,19 +8,19 @@
 #include <UiElement.h>
 
 #include "ScrollableList.h"
+#include "Slider.h"
 
 class TestState:public GameState {
 	std::vector<UiElement*> _children;
 public:
 	explicit TestState(SDL_Renderer* renderer):GameState(renderer) {
-		ScrollableList* scrollable = new ScrollableList({0,0,0,0}, 20);
-		scrollable->setCoordinatesf(0.1,0.1,0.8,0.8);
-		std::vector<std::string> list = {"aaa", "bbb", "ccc", "ddd"};
+		SDL_Rect rect = {0,0,20,100};
+		Slider* slider = new Slider(rect, 0 ,100);
 
-		for (auto& item : list) {
-			scrollable->addItem(item);
-		}
-		_children.push_back(scrollable);
+		slider->setOrientation(Slider::VERTICAL);
+		slider->setValue(1);
+
+		_children.push_back(slider);
 	}
 
 	~TestState() override {
