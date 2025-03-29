@@ -42,8 +42,7 @@ LevelSelectState::LevelSelectState(SDL_Renderer* renderer):GameState(renderer) {
 	_level = 0;
 	_previousLevel = 0;
 
-	_levels = {"level 1", "level 2", "level 3", "level 4", "level 5"};
-	_paths = {"../Levels/Lvl1", "../Levels/Lvl2", "../Levels/Lvl3", "../Levels/Lvl4", "../Levels/Lvl5"};
+	_levels = Game::_databaseController->getLevels();
 	_button->setText(_levels[_level]);
 
 
@@ -78,7 +77,7 @@ void LevelSelectState::renderPreview() {
 	SDL_RenderClear(_renderer);
 	TileRender* tl = new TileRender();
 	tl->LoadTexture(_renderer, "../Textures/wallTiles_white.png");
-	tl->readMap(_paths[_level]);
+	tl->readMapString(Game::_databaseController->getLevel(_level+1).map);
 	tl->renderMap(_renderer);
 
 	_levelPreview->setTexture(texture);

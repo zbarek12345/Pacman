@@ -16,12 +16,14 @@ int Game::_volume = 0;                      // Default value for _volume
 SDL_Window* Game::_window = nullptr;        // Initialize to nullptr
 SDL_Renderer* Game::_renderer = nullptr;
 TTF_Font* Game::_font = nullptr;
+DatabaseController* Game::_databaseController = nullptr;
 
 Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_window = window;
 	_renderer = renderer;
-	_currentState = new TestState(renderer);
+	_currentState = new MenuState(renderer);
 	_font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
+	_databaseController = new DatabaseController("../Database/database.sqlite");
 }
 
 Game::~Game() {

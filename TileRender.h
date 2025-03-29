@@ -61,6 +61,8 @@ public:
 
 	void LoadTexture(SDL_Renderer *renderer, std::string path);
 
+	void readMapString(std::string map);
+
 	void readMap(std::string &fileName);
 
 	void DrawTile(SDL_Renderer *renderer, tile *tile, int x, int y);

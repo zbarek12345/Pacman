@@ -15,7 +15,7 @@ public:
 	};
 private:
 	orientations _orientation;
-	int _value;
+	int* _value;
 	int _min, _max;
 	bool _selected, _held;
 
@@ -32,7 +32,11 @@ public:
 
 	void setValue(int value);
 
+	int getValue();
+
 	void setMinMax(int min, int max);
+
+	void attachToValue(int* value);
 
 	void render(SDL_Renderer* renderer) override;
 	void update() override;

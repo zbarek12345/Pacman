@@ -25,6 +25,60 @@ void TileRender::LoadTexture(SDL_Renderer* renderer,std::string path) {
 	_texture2 = SDL_CreateTextureFromSurface(renderer, tempSurface);
 }
 
+void TileRender::readMapString(std::string map) {
+
+	for (int i =0;i<mapSize;i++) {
+		memset(_map[i], 0, sizeof(tile) * mapSize);
+	}
+
+	int i = 0, j = 0;
+	for (auto &e: map) {
+		if (e == ',' || e == '\n' || e=='\r') {
+			continue;
+		}
+		if (e == '#' || e == 'p')
+			_map[i][j].isWall = 1;
+		else {
+			_map[i][j].isWall = 0;
+			if (e == '-')
+				_points.push_back({j * 24, i * 24, 24, 24});
+			else if (e == 'x')
+				_superPoints.push_back({j * 24, i * 24, 24, 24});
+		}
+		printf("%c", e);
+		j++;
+		if (j == mapSize) {
+			j = 0;
+			i++;
+		}
+	}
+
+	for (int i = 0; i < mapSize; i++) {
+		for (int j = 0; j < mapSize; j++) {
+			if (i > 0) {
+				if (_map[i - 1][j].isWall) {
+					_map[i][j].top = _map[i - 1][j].isWall;
+				}
+			}
+			if (j > 0) {
+				if (_map[i][j - 1].isWall) {
+					_map[i][j].left = _map[i][j - 1].isWall;
+				}
+			}
+			if (i < mapSize - 1) {
+				if (_map[i + 1][j].isWall) {
+					_map[i][j].bottom = _map[i + 1][j].isWall;
+				}
+			}
+			if (j < mapSize - 1) {
+				if (_map[i][j + 1].isWall) {
+					_map[i][j].right = _map[i][j + 1].isWall;
+				}
+			}
+		}
+	}
+}
+
 void TileRender::readMap(std::string &fileName) {
 
 	FILE* f = fopen(fileName.c_str(), "r");

@@ -14,11 +14,11 @@ class TestState:public GameState {
 	std::vector<UiElement*> _children;
 public:
 	explicit TestState(SDL_Renderer* renderer):GameState(renderer) {
-		SDL_Rect rect = {0,0,20,100};
-		Slider* slider = new Slider(rect, 0 ,100);
+		SDL_Rect rect = {100,100,30,200};
+		Slider* slider = new Slider(rect, 0 ,50);
 
 		slider->setOrientation(Slider::VERTICAL);
-		slider->setValue(1);
+		slider->setValue(3);
 
 		_children.push_back(slider);
 	}

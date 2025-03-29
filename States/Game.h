@@ -6,6 +6,7 @@
 #define GAME_H
 #include <GameState.h>
 #include <SDL_ttf.h>
+#include <DatabaseController.h>
 
 
 class Game {
@@ -18,6 +19,7 @@ public:
 		GAME,
 		GAME_OVER,
 	};
+	static DatabaseController* _databaseController;
 	static GameStates _state;
 	static GameState* _currentState;
 	static int _speed;

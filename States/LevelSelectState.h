@@ -14,7 +14,7 @@
 class LevelSelectState : public GameState{
 	Image* _levelPreview;
 	Button* _button,* _leftButton,* _rightButton;
-	std::vector<std::string> _levels, _paths;
+	std::vector<std::string> _levels;
 public:
 
 	LevelSelectState(SDL_Renderer* renderer);
