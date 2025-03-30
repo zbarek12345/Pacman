@@ -64,6 +64,8 @@ void* Game::Renderer(void* arg) {
 void Game::run() {
 	SDL_Event event;
 	SDL_bool running = SDL_TRUE;
+	uint32_t start = SDL_GetTicks();
+	uint32_t delta = ceil(1e3/_fps);
 	while (running) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) running = SDL_FALSE;
@@ -73,9 +75,12 @@ void Game::run() {
 		}
 		_currentState->update();
 		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // Black background
-		SDL_RenderClear(_renderer);
-		_currentState->render();
-		SDL_RenderPresent(_renderer);
+		if (SDL_GetTicks() - start > delta) {
+			SDL_RenderClear(_renderer);
+			_currentState->render();
+			SDL_RenderPresent(_renderer);
+			start = SDL_GetTicks();
+		}
 		SDL_Delay(1);
 	}
 
