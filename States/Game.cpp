@@ -17,13 +17,17 @@ SDL_Window* Game::_window = nullptr;        // Initialize to nullptr
 SDL_Renderer* Game::_renderer = nullptr;
 TTF_Font* Game::_font = nullptr;
 DatabaseController* Game::_databaseController = nullptr;
-
+int Game::_fps = 60;
+bool Game::_render = true;
+pthread_t Game::_renderThread;
 Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_window = window;
 	_renderer = renderer;
 	_currentState = new MenuState(renderer);
 	_font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
 	_databaseController = new DatabaseController("../Database/database.sqlite");
+
+	pthread_create(&_renderThread, nullptr, Renderer, nullptr);
 }
 
 Game::~Game() {
@@ -31,11 +35,30 @@ Game::~Game() {
 	TTF_CloseFont(_font);
 }
 
+void* Game::Renderer(void* arg) {
+
+
+	int sleepNs = ceil(1e6/_fps);
+	uint64_t start = SDL_GetPerformanceCounter(), end;
+	timespec sleepTime = {0,0};
+	while (_render) {
+		SDL_RenderClear(_renderer);
+		_currentState->render();
+		SDL_RenderPresent(_renderer);
+
+		end = SDL_GetPerformanceCounter();
+		sleepTime.tv_nsec = end - start;
+		if (sleepTime.tv_nsec < sleepNs) {
+			nanosleep(&sleepTime, nullptr);
+		}
+		start = SDL_GetPerformanceCounter();
+	}
+	return nullptr;
+}
 
 void Game::run() {
 	SDL_Event event;
 	SDL_bool running = SDL_TRUE;
-
 	while (running) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) running = SDL_FALSE;
@@ -43,8 +66,11 @@ void Game::run() {
 		}
 		_currentState->update();
 		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // Black background
-		SDL_RenderClear(_renderer);
-		_currentState->render();
-		SDL_RenderPresent(_renderer);
+		// SDL_RenderClear(_renderer);
+		// _currentState->render();
+		// SDL_RenderPresent(_renderer);
 	}
+
+	_render = false;
+	pthread_join(_renderThread, nullptr);
 }

@@ -7,6 +7,8 @@
 #include <GameState.h>
 #include <SDL_ttf.h>
 #include <DatabaseController.h>
+#include <pthread.h>
+#include <unistd.h>
 
 
 class Game {
@@ -25,9 +27,13 @@ public:
 	static int _speed;
 	static int _volume;
 	static TTF_Font* _font;
+	static int _fps;
+	static bool _render;
+	static pthread_t _renderThread;
 
 	Game(SDL_Window* window, SDL_Renderer* renderer);
 
+	static void* Renderer(void* arg);
 	static SDL_Window* _window;
 	static SDL_Renderer* _renderer;
 

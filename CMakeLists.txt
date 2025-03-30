@@ -26,6 +26,8 @@ add_executable(pacman
         UI_Element/Slider.cpp
         Database/DatabaseController.cpp
         Database/DatabaseController.h
+        States/PlayState.cpp
+        States/PlayState.h
 )
 
 add_compile_options(--static -03 -march=native)
