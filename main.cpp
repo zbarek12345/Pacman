@@ -19,13 +19,13 @@ bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
     *window = SDL_CreateWindow("SDL2 Texture Demo",
                                SDL_WINDOWPOS_CENTERED,
                                SDL_WINDOWPOS_CENTERED,
-                             1080, 900,
+                             1080, 720,
                                SDL_WINDOW_SHOWN);
     if (!*window) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
         return false;
     }
-    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_SOFTWARE);
     if (!*renderer) {
         std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
         return false;
