@@ -32,6 +32,8 @@ public:
 	void setCoordinatesf(float x, float y, float w, float h);
 	void setPositionf(float x, float y);
 	void setSizef(float w, float h);
+
+	SDL_Rect getCoordinates() const;
 };
 
 inline void UiElement::setPosition(int32_t x, int32_t y) {
@@ -73,5 +75,9 @@ inline void  UiElement::setSizef(float w, float h){
 	SDL_GetWindowSize(Game::_window,&x_size,&y_size);
 	_coordinates.w = std::min(static_cast<int>(w * x_size),x_size-_coordinates.x);
 	_coordinates.h = std::min(static_cast<int>(h * y_size),y_size-_coordinates.y);
+}
+
+inline SDL_Rect UiElement::getCoordinates() const {
+	return _coordinates;
 }
 #endif //UIELEMENT_H

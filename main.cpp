@@ -25,7 +25,7 @@ bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
         return false;
     }
-    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_SOFTWARE);
+    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!*renderer) {
         std::cerr << "Failed to create renderer: " << SDL_GetError() << std::endl;
         return false;

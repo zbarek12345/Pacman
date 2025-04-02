@@ -70,6 +70,8 @@ public:
 	~TileRender();
 
 	void renderMap(SDL_Renderer *renderer);
+
+	void renderEmptyMap(SDL_Renderer *renderer);
 };
 
 

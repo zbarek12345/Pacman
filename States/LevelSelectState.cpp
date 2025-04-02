@@ -72,17 +72,17 @@ LevelSelectState::LevelSelectState(SDL_Renderer* renderer):GameState(renderer) {
 
 void LevelSelectState::renderPreview() {
 	SDL_Texture *texture = SDL_CreateTexture(Game::_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 768, 768);
-	SDL_SetRenderTarget(_renderer, texture);
-	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // Set clear color to black (or other desired color)
-	SDL_RenderClear(_renderer);
+	SDL_SetRenderTarget(Game::_renderer, texture);
+	SDL_SetRenderDrawColor(Game::_renderer, 0, 0, 0, 255); // Set clear color to black (or other desired color)
+	SDL_RenderClear(Game::_renderer);
 	TileRender* tl = new TileRender();
-	tl->LoadTexture(_renderer, "../Textures/wallTiles_white.png");
+	tl->LoadTexture(Game::_renderer, "../Textures/wallTiles_white.png");
 	tl->readMapString(Game::_databaseController->getLevel(_level+1).map);
-	tl->renderMap(_renderer);
+	tl->renderMap(Game::_renderer);
 
 	_levelPreview->setTexture(texture);
 
-	SDL_SetRenderTarget(_renderer, nullptr);
+	SDL_SetRenderTarget(Game::_renderer, nullptr);
 	delete tl;
 }
 

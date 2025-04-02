@@ -455,6 +455,15 @@ void TileRender::renderMap(SDL_Renderer* renderer) {
 		SDL_RenderCopy(renderer, _texture2, &_superPointTexture, &e);
 }
 
+void TileRender::renderEmptyMap(SDL_Renderer *renderer) {
+	SDL_SetRenderDrawColor(renderer, 100, 30, 144, 255);
+	for (int i = 0; i < mapSize; i++) {
+		for (int j = 0; j < mapSize; j++) {
+			DrawTile(renderer, &_map[i][j], j * 24, i * 24);
+		}
+	}
+}
+
 TileRender::~TileRender() {
 	if (_texture!=nullptr)
 		SDL_DestroyTexture(_texture);

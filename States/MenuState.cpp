@@ -12,7 +12,7 @@ GameState* next = nullptr;
 
 MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	auto img = new Image();
-	img->setCoordinatesf(0.1,0.1,0.8,0.4);
+	img->setCoordinatesf(0.2,0.1,0.6,0.4);
 	auto Play = new Button();
 	Play->setCoordinatesf(0.3,0.55,0.4,0.15);
 	SDL_Color normal = {137, 209, 54}, hover = {111, 191, 19}, pressed = {74, 138, 0};
