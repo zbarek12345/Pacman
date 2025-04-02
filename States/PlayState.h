@@ -84,10 +84,23 @@ class PlayState::GameElement::Entity {
 	Animation _directions[4],_deadDirections[4], _terrified;
 	direction _direction;
 	Coordinates _position, _target, _spawn;
-	explicit Entity(GameElement* gameElement);
+	GameElement* _gameElement;
+	SDL_Texture* _texture;
+
+	bool isCrossroad();
+	void updateTarget();
+	void updateDirection();
+public:
+	explicit Entity(GameElement* gameElement, Coordinates spawn);
+	~Entity();
 	void render(SDL_Renderer* renderer);
 	void updatePosition();
 	Coordinates getPosition();
+
+	void BlinkyTargeting();
+
+	void setTargetUpdater(void (*callback)(Entity* entity));
+	void setTexture(SDL_Texture* texture);
 };
 
 class PlayState::GameElement::Map {

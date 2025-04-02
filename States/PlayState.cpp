@@ -137,6 +137,216 @@ void PlayState::handleInput(SDL_Event &event, GameState *&nextState) {
 	_game->handleInput(event);
 }
 
+bool PlayState::GameElement::Entity::isCrossroad() {
+	int possibility = _gameElement->_map->isWall(_position.x -1, _position.y) + _gameElement->_map->isWall(_position.x +1, _position.y) + _gameElement->_map->isWall(_position.x, _position.y -1) + _gameElement->_map->isWall(_position.x, _position.y +1);
+	if (_gameElement->_map->isWall(_position.x-1 , _position.y)&&_position.x == 1) {
+		possibility--;
+	}else if (_gameElement->_map->isWall(_position.x+1 , _position.y)&&_position.x == 31) {
+		possibility--;
+	}else if (_gameElement->_map->isWall(_position.x, _position.y-1)&&_position.y == 1) {
+		possibility--;
+	}else if (_gameElement->_map->isWall(_position.x, _position.y+1)&&_position.y == 31) {
+		possibility--;
+	}
+	return possibility>2;
+}
+
+void PlayState::GameElement::Entity::updateDirection() {
+	Coordinates nextPos = _position;
+	if (_direction == Up) {
+		nextPos.y -= 1;
+	}else if (_direction == Down) {
+		nextPos.y += 1;
+	}else if (_direction == Left) {
+		nextPos.x -= 1;
+	}else if (_direction == Right) {
+		nextPos.x += 1;
+	}
+	if (isCrossroad()) {
+
+	}else if (_gameElement->_map->isWall(nextPos.x, nextPos.y)) {
+		if (!_gameElement->_map->isWall(_position.x-1, _position.y) && _position.x != 1 && _direction != Right) {
+			_direction = Left;
+		}else if (!_gameElement->_map->isWall(_position.x+1, _position.y) && _position.x != 31 && _direction != Left) {
+			_direction = Right;
+		}else if (!_gameElement->_map->isWall(_position.x, _position.y-1) && _position.y != 1 && _direction != Down) {
+			_direction = Up;
+		}else if (!_gameElement->_map->isWall(_position.x, _position.y+1) && _position.y != 31 && _direction != Up) {
+			_direction = Down;
+		}
+	}
+}
+
+PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spawn) {
+	_gameElement = gameElement;
+	_spawn = spawn;
+	_position = spawn	;
+	_direction = (direction)(rand()%4);
+	_texture = IMG_LoadTexture(Game::_renderer,"../Textures/blinky.png");
+
+	//UP
+	_directions[0] = {};
+	_directions[0].frames = new SDL_Rect[2];
+	_directions[0].frames[0] = {6*24,0,24,24};
+	_directions[0].frames[1] = {7*24,0,24,24};
+	_directions[0].currentFrame = 0;
+	_directions[0].frameCount = 2;
+	_directions[0].frameChangeInterval = 200;
+	_directions[0].lastFrameChange = 0;
+
+	//Down
+	_directions[1] = {};
+	_directions[1].frames = new SDL_Rect[2];
+	_directions[1].frames[0] = {2*24,0,24,24};
+	_directions[1].frames[1] = {3*24,0,24,24};
+	_directions[1].currentFrame = 0;
+	_directions[1].frameCount = 2;
+	_directions[1].frameChangeInterval = 200;
+	_directions[1].lastFrameChange = 0;
+
+	//Left
+	_directions[2] = {};
+	_directions[2].frames = new SDL_Rect[2];
+	_directions[2].frames[0] = {4*24,0,24,24};
+	_directions[2].frames[1] = {5*24,0,24,24};
+	_directions[2].currentFrame = 0;
+	_directions[2].frameCount = 2;
+	_directions[2].frameChangeInterval = 200;
+	_directions[2].lastFrameChange = 0;
+
+	//Right
+	_directions[3] = {};
+	_directions[3].frames = new SDL_Rect[2];
+	_directions[3].frames[0] = {0*24,0,24,24};
+	_directions[3].frames[1] = {1*24,0,24,24};
+	_directions[3].currentFrame = 0;
+	_directions[3].frameCount = 2;
+	_directions[3].frameChangeInterval = 200;
+	_directions[3].lastFrameChange = 0;
+
+	//UP
+	_deadDirections[0] = {};
+	_deadDirections[0].frames = new SDL_Rect[1];
+	_deadDirections[0].frames[0] = {15*24,0,24,24};
+	_deadDirections[0].currentFrame = 0;
+	_deadDirections[0].frameCount = 1;
+	_deadDirections[0].frameChangeInterval = 200;
+	_deadDirections[0].lastFrameChange = 0;
+
+	//Down
+	_deadDirections[1] = {};
+	_deadDirections[1].frames = new SDL_Rect[1];
+	_deadDirections[1].frames[0] = {13*24,0,24,24};
+	_deadDirections[1].currentFrame = 0;
+	_deadDirections[1].frameCount = 1;
+	_deadDirections[1].frameChangeInterval = 200;
+	_deadDirections[1].lastFrameChange = 0;
+
+	//Left
+	_deadDirections[2] = {};
+	_deadDirections[2].frames = new SDL_Rect[1];
+	_deadDirections[2].frames[0] = {11*24,0,24,24};
+	_deadDirections[2].currentFrame = 0;
+	_deadDirections[2].frameCount = 1;
+	_deadDirections[2].frameChangeInterval = 200;
+	_deadDirections[2].lastFrameChange = 0;
+
+	//Right
+	_deadDirections[3] = {};
+	_deadDirections[3].frames = new SDL_Rect[1];
+	_deadDirections[3].frames[0] = {14*24,0,24,24};
+	_deadDirections[3].currentFrame = 0;
+	_deadDirections[3].frameCount = 1;
+	_deadDirections[3].frameChangeInterval = 200;
+	_deadDirections[3].lastFrameChange = 0;
+
+	_terrified = {};
+	_terrified.frames = new SDL_Rect[4];
+	_terrified.frames[0] = {8*24,0,24,24};
+	_terrified.frames[1] = {9*24,0,24,24};
+	_terrified.frames[2] = {10*24,0,24,24};
+	_terrified.frames[3] = {11*24,0,24,24};
+	_terrified.currentFrame = 0;
+	_terrified.frameCount = 4;
+	_terrified.frameChangeInterval = 200;
+	_terrified.lastFrameChange = 0;
+}
+
+PlayState::GameElement::Entity::~Entity() {
+	for (int i = 0; i < 4; i++) {
+		delete[] _directions[i].frames;
+	}
+	for (int i = 0; i < 4; i++) {
+		delete[] _deadDirections[i].frames;
+	}
+	delete[] _terrified.frames;
+}
+
+void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
+	SDL_Rect src = {};
+	if (_state == Normal) {
+		src = _directions[_direction].frames[_directions[_direction].currentFrame];
+	}else if (_state == Dead) {
+		src = _deadDirections[_direction].frames[_deadDirections[_direction].currentFrame];
+	}else if (_state == Terrified) {
+		src = _terrified.frames[_terrified.currentFrame];
+	}
+	SDL_Rect dst = _gameElement->getCoordinates();
+	dst.x += round(_position.x*16);
+	dst.y += round(_position.y*16);
+	dst.w = 16;
+	dst.h = 16;
+	SDL_RenderCopy(renderer, _texture, &src, &dst);
+}
+
+void PlayState::GameElement::Entity::updatePosition() {
+	double speed = Game::_speed * 1e7; // Correct time calculation
+	double targetX = _position.x, targetY = _position.y;
+	if (_direction == Up) {
+		targetX -= speed;
+	}else if (_direction == Down) {
+		targetX += speed;
+	}else if (_direction == Left) {
+		targetY -= speed;
+	}else if (_direction == Right) {
+		targetY += speed;
+	}
+
+	if (fabs(targetX-round(targetX))<0.02) {
+		targetX = round(targetX);
+	}else if (fabs(targetY-round(targetY))<0.02) {
+		targetY = round(targetY);
+	}
+
+	if (targetX == round(targetX) && targetY == round(targetY)) {
+		updateDirection();
+	}
+
+	_position.x = targetX;
+	_position.y = targetY;
+}
+
+PlayState::GameElement::Coordinates PlayState::GameElement::Entity::getPosition() {
+	return _position;
+}
+
+void PlayState::GameElement::Entity::BlinkyTargeting() {
+	if (_state == Normal) {
+		_target = {32,32};
+	}else if (_state == Dead) {
+		_target = {32,32};
+	}else if (_state == Chasing) {
+		_target = _gameElement->_player->getPosition();
+	}
+}
+
+void PlayState::GameElement::Entity::setTargetUpdater(void(*callback)()) {
+	updateTarget() = callback;
+}
+
+void PlayState::GameElement::Entity::setTexture(SDL_Texture *texture) {
+}
+
 PlayState::GameElement::Map::Map() {
 
 	_map = new Cell*[mapSize];

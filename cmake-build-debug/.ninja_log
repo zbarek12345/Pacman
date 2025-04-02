@@ -28,3 +28,6 @@
 8	958	7652896329586743	CMakeFiles/pacman.dir/States/Game.cpp.obj	f9db30795f36c126
 13	1082	7652896329636679	CMakeFiles/pacman.dir/States/PlayState.cpp.obj	a9e8bb7de75903c9
 1082	1232	7652896340325374	pacman.exe	87c7ff82059131c3
+58	1341	7653306916260242	CMakeFiles/pacman.dir/States/Game.cpp.obj	f9db30795f36c126
+63	1387	7653306916310271	CMakeFiles/pacman.dir/States/PlayState.cpp.obj	a9e8bb7de75903c9
+1387	1903	7653306929545030	pacman.exe	87c7ff82059131c3
