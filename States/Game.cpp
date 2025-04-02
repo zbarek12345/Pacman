@@ -18,7 +18,7 @@ SDL_Window* Game::_window = nullptr;        // Initialize to nullptr
 SDL_Renderer* Game::_renderer = nullptr;
 TTF_Font* Game::_font = nullptr;
 DatabaseController* Game::_databaseController = nullptr;
-int Game::_fps = 30;
+int Game::_fps = 100;
 bool Game::_render = true;
 pthread_t Game::_renderThread;
 pthread_mutex_t stateLock = PTHREAD_MUTEX_INITIALIZER;

@@ -76,15 +76,15 @@ class PlayState::GameElement::Entity {
 
 	enum state{
 		Normal,
+		Chasing,
 		Terrified,
 		Dead
-	};
+	} _state;
 
+	Animation _directions[4],_deadDirections[4], _terrified;
 	direction _direction;
-	Coordinates _position;
-	Entity();
-	Entity(Coordinates position);
-	void setDirection(direction direction);
+	Coordinates _position, _target, _spawn;
+	explicit Entity(GameElement* gameElement);
 	void render(SDL_Renderer* renderer);
 	void updatePosition();
 	Coordinates getPosition();
@@ -105,7 +105,7 @@ class PlayState::GameElement::Map {
 		}
 	};
 	Cell** _map;
-	Coordinates _playerRespawn;
+	Coordinates _playerRespawn{};
 public:
 	Map();
 	~Map();

@@ -118,7 +118,7 @@ void PlayState::GameElement::verifyCollision() {
 
 PlayState::PlayState(int32_t level): GameState(Game::_renderer) {
 	_game = new GameElement(level);
-	_game->setCoordinatesf(0.0, 0.0, 0.9, 0.9);
+	_game->setCoordinatesf(0.1, 0.1, 0.9, 0.9);
 }
 
 PlayState::~PlayState() {
