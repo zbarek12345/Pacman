@@ -6,8 +6,9 @@
 #define PLAYSTATE_H
 #include <cstdint>
 #include <string>
-#include <SDL_render.h>
-#include <GameState.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_image.h>
+#include "GameState.h"
 #include "UiElement.h"
 
 
@@ -53,7 +54,9 @@ class PlayState :public GameState{
 
 		Map* _map;
 		Player* _player;
+		Entity** _ghosts;
 		uint64_t previousTime;
+		uint64_t _startTime;
 		SDL_Texture* _points;
 		//std::vector<Entity> _entities;
 
@@ -83,23 +86,32 @@ class PlayState::GameElement::Entity {
 
 	Animation _directions[4],_deadDirections[4], _terrified;
 	direction _direction;
-	Coordinates _position, _target, _spawn;
+	Coordinates _position, _target, _spawn, _previous;
 	GameElement* _gameElement;
 	SDL_Texture* _texture;
 
-	bool isCrossroad();
 	void updateTarget();
-	void updateDirection();
+	void updateDirection(int x, int y);
+	bool isWall(int x, int y);
+	bool isCrossroad(int x, int y);
+	void BlinkyTargeting();
+	void InkyTargeting();
+	void PinkyTargeting();
+	void ClydeTargeting();
+
 public:
-	explicit Entity(GameElement* gameElement, Coordinates spawn);
+    enum ghostType{
+	   Blinky,
+	   Inky,
+	   Pinky,
+	   Clyde
+	} _ghost;
+
+	explicit Entity(GameElement* gameElement, Coordinates spawn, ghostType ghost);
 	~Entity();
 	void render(SDL_Renderer* renderer);
-	void updatePosition();
+	void updatePosition(int deltaNanos);
 	Coordinates getPosition();
-
-	void BlinkyTargeting();
-
-	void setTargetUpdater(void (*callback)(Entity* entity));
 	void setTexture(SDL_Texture* texture);
 };
 
@@ -119,6 +131,7 @@ class PlayState::GameElement::Map {
 	};
 	Cell** _map;
 	Coordinates _playerRespawn{};
+	Coordinates _ghostRespawn{};
 public:
 	Map();
 	~Map();
@@ -132,6 +145,7 @@ public:
 	bool isPoint(int x, int y);
 	bool isPellet(int x, int y);
 	Coordinates getPlayerRespawn();
+	Coordinates getGhostRespawn();
 };
 
 class PlayState::GameElement::Player{
@@ -149,9 +163,9 @@ class PlayState::GameElement::Player{
 public:
 	Player(Coordinates position, GameElement* gameElement);
 	void setDirection(direction direction);
+	direction getDirection();
 	void render(SDL_Renderer* renderer);
 	void updatePosition(int deltaNanos);
-
 	~Player();
 
 	Coordinates getPosition();
