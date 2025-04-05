@@ -27,8 +27,7 @@ Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_renderer = renderer;
 	_font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
 	_databaseController = new DatabaseController("../Database/database.sqlite");
-	//_currentState = new MenuState(_renderer);
-	_currentState = new PlayState(1);
+	_currentState = new MenuState(_renderer);
 	//pthread_mutex_init(&stateLock, nullptr);
 	//pthread_create(&_renderThread, nullptr, Renderer, nullptr);
 }
@@ -67,6 +66,7 @@ void Game::run() {
 	SDL_Event event;
 	SDL_bool running = SDL_TRUE;
 	uint32_t start = SDL_GetTicks();
+	//GameState::_next = nullptr;
 	while (running) {
 		uint32_t delta = ceil(1e3/_fps);
 		while (SDL_PollEvent(&event)) {

@@ -8,7 +8,7 @@
 
 #include "LevelSelectState.h"
 
-GameState* next = nullptr;
+
 
 MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	auto img = new Image();
@@ -30,7 +30,7 @@ MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	img->setTexture(SDL_CreateTextureFromSurface(_renderer, surface));
 	SDL_FreeSurface(surface);
 
-	Play->onClick([](){next = new LevelSelectState(Game::_renderer);});
+	Play->onClick([](){_next = new LevelSelectState(Game::_renderer);});
 	_children.push_back(img);
 	_children.push_back(Play);
 	_children.push_back(Exit);
@@ -55,9 +55,10 @@ void MenuState::handleInput(SDL_Event& event, GameState*& nextState) {
 		e->handleInput(event);
 	}
 
-	if (next != nullptr){
+	if (_next != nullptr){
 		GameState *cstate = nextState;
-		nextState = next;
+		nextState = _next;
+		_next = nullptr;
 		delete cstate;
 	}
 }

@@ -16,11 +16,23 @@ bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
+
+    SDL_DisplayMode current;
+    if (SDL_GetCurrentDisplayMode(0, &current) != 0) {
+        // Handle error - maybe fall back to default resolution
+        SDL_Log("Could not get display mode: %s", SDL_GetError());
+        current.w = 1080;
+        current.h = 720;
+    }
+
+    // Create window using current resolution
     *window = SDL_CreateWindow("SDL2 Texture Demo",
-                               SDL_WINDOWPOS_CENTERED,
-                               SDL_WINDOWPOS_CENTERED,
-                             1080, 720,
-                               SDL_WINDOW_SHOWN);
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                         1080,
+                                          720,
+                                          SDL_WINDOW_SHOWN);
+
     if (!*window) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
         return false;

@@ -28,6 +28,7 @@ add_executable(pacman
         Database/DatabaseController.h
         States/PlayState.cpp
         States/PlayState.h
+        States/GameState.cpp
 )
 
 add_compile_options(--static -03 -march=native)

@@ -18,6 +18,9 @@ public:
 	virtual void handleInput(SDL_Event& event, GameState*& nextState) = 0; // Handle events and possibly switch states
 
 	SDL_Renderer* _renderer; // Shared renderer
+	static GameState* _next;
 };
+
+
 
 #endif //STATE_H

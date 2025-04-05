@@ -7,10 +7,13 @@
 #include <SDL_image.h>
 
 #include "Image.h"
+#include "PlayState.h"
 #include "../TileRender.h"
 
 void dec_iterator();
 void inc_iterator();
+void load_level();
+
 
 std::string buttons[2] = {"<-", "->"};
 
@@ -64,9 +67,10 @@ LevelSelectState::LevelSelectState(SDL_Renderer* renderer):GameState(renderer) {
 
 	_button->setFont(Game::_font);
 	_elemSize = _levels.size();
+
 	_leftButton->onClick(dec_iterator);
 	_rightButton->onClick(inc_iterator);
-
+	_button->onClick(load_level);
 	renderPreview();
 }
 
@@ -121,6 +125,10 @@ void dec_iterator() {
 	_level = (_level+_elemSize-1)%_elemSize;
 }
 
+void load_level() {
+	GameState::_next = new PlayState(_level+1);
+}
+
 bool clicked = false;
 void LevelSelectState::handleInput(SDL_Event& event, GameState*& nextState) {
 	if (event.type == SDL_KEYDOWN) {
@@ -134,4 +142,11 @@ void LevelSelectState::handleInput(SDL_Event& event, GameState*& nextState) {
 	_button->handleInput(event);
 	_leftButton->handleInput(event);
 	_rightButton->handleInput(event);
+
+	if (_next != nullptr){
+		GameState *cstate = nextState;
+		nextState = _next;
+		_next = nullptr;
+		delete cstate;
+	}
 }

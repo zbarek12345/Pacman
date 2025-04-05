@@ -22,6 +22,7 @@ class PlayState :public GameState{
 		void render(SDL_Renderer* renderer) override;
 		void update() override;
 		void handleInput(SDL_Event& event) override;
+		void calculateMap();
 
 		struct Coordinates {
 			double x;
@@ -58,6 +59,8 @@ class PlayState :public GameState{
 		uint64_t previousTime;
 		uint64_t _startTime;
 		SDL_Texture* _points;
+		SDL_Rect _mapRect;
+		int _tileSize;
 		//std::vector<Entity> _entities;
 
 		void verifyCollision();
@@ -72,7 +75,6 @@ public:
 	void update() override;
 	void render() override;
 	void handleInput(SDL_Event& event, GameState*& nextState) override;
-
 };
 
 class PlayState::GameElement::Entity {

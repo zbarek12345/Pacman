@@ -38,7 +38,8 @@ PlayState::GameElement::GameElement(int level) : UiElement() {
 
 	_ghosts = new Entity*[4];
 	Coordinates ghostResp = _map->getGhostRespawn();
-	_ghosts[0] = new Entity(this, _map->getGhostRespawn(), Entity::Blinky);
+	ghostResp.y-=1;
+	_ghosts[0] = new Entity(this, ghostResp, Entity::Blinky);
 	ghostResp.y +=2;
 	_ghosts[1] = new Entity(this, ghostResp, Entity::Inky );
 	ghostResp.x ++;
@@ -80,10 +81,8 @@ PlayState::GameElement::~GameElement() {
 }
 
 void PlayState::GameElement::render(SDL_Renderer *renderer) {
-	_coordinates.w = 512;
-	_coordinates.h = 512;
 	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
-	SDL_RenderCopy(renderer, _mapTexture, nullptr, &_coordinates);
+	SDL_RenderCopy(renderer, _mapTexture, nullptr, &_mapRect);
 
 	SDL_Rect pointTexture = {32,0,16,16};
 	SDL_Rect superPointTexture = {48,0,16,16};
@@ -91,11 +90,11 @@ void PlayState::GameElement::render(SDL_Renderer *renderer) {
 	for (int i = 0; i < mapSize; i++) {
 		for (int j = 0; j < mapSize; j++) {
 			if (!_map->isWall(j, i)) {
-				SDL_Rect dst = _coordinates;
-				dst.x += j * 16;
-				dst.y += i * 16;
-				dst.w = 16;
-				dst.h = 16;
+				SDL_Rect dst = _mapRect;
+				dst.x += j * _tileSize;
+				dst.y += i * _tileSize;
+				dst.w = _tileSize;
+				dst.h = _tileSize;
 				if (_map->isPellet(j, i))
 					SDL_RenderCopy(renderer, _points, &superPointTexture, &dst);
 				else if (_map->isPoint(j, i))
@@ -137,12 +136,26 @@ void PlayState::GameElement::handleInput(SDL_Event &event) {
 	}
 }
 
+void PlayState::GameElement::calculateMap() {
+	int addSize = 32*4;int i = 1;
+	while (i*addSize<_coordinates.w && i*addSize<_coordinates.h) {i++;}
+	if (i*addSize>_coordinates.w || i*addSize>_coordinates.h){i--;}
+	_tileSize = i*4;
+	printf("%d\n", _tileSize);
+	int mapSize = i*addSize;
+	_mapRect.x = _coordinates.x + (_coordinates.w - mapSize)/2;
+	_mapRect.y = _coordinates.y + (_coordinates.h - mapSize)/2;
+	_mapRect.w = mapSize;
+	_mapRect.h = mapSize;
+}
+
 void PlayState::GameElement::verifyCollision() {
 }
 
 PlayState::PlayState(int32_t level): GameState(Game::_renderer) {
 	_game = new GameElement(level);
-	_game->setCoordinatesf(0.1, 0.1, 0.9, 0.9);
+	_game->setCoordinatesf(0.1, 0.1, 0.8, 0.8);
+	_game->calculateMap();
 }
 
 PlayState::~PlayState() {
@@ -154,6 +167,7 @@ void PlayState::update() {
 }
 
 void PlayState::render() {
+	SDL_RenderClear(Game::_renderer);
 	_game->render(Game::_renderer);
 }
 
@@ -211,8 +225,7 @@ void PlayState::GameElement::Entity::updateDirection(int x, int y) {
         else
             costs[_direction-1] = 1e8;
         double bestCost = 1e8;
-        if(_ghost == Blinky)
-            printf("Position : %d, %d \n", x, y);
+
         for(int i =0;i<4;i++){
             if(_ghost == Blinky)
                 printf("%d : %f\n", i, costs[i]);
@@ -260,7 +273,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_directions[0].frames[1] = {7*24,0,24,24};
 	_directions[0].currentFrame = 0;
 	_directions[0].frameCount = 2;
-	_directions[0].frameChangeInterval = 200;
+	_directions[0].frameChangeInterval = 500;
 	_directions[0].lastFrameChange = 0;
 
 	//printf("Test: %d %d", _directions[0].frames[0].x, _directions[0].frames[1].x);
@@ -271,7 +284,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_directions[1].frames[1] = {3*24,0,24,24};
 	_directions[1].currentFrame = 0;
 	_directions[1].frameCount = 2;
-	_directions[1].frameChangeInterval = 200;
+	_directions[1].frameChangeInterval = 500;
 	_directions[1].lastFrameChange = 0;
 
 	//Left
@@ -281,7 +294,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_directions[2].frames[1] = {5*24,0,24,24};
 	_directions[2].currentFrame = 0;
 	_directions[2].frameCount = 2;
-	_directions[2].frameChangeInterval = 200;
+	_directions[2].frameChangeInterval = 500;
 	_directions[2].lastFrameChange = 0;
 
 	//Right
@@ -291,7 +304,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_directions[3].frames[1] = {1*24,0,24,24};
 	_directions[3].currentFrame = 0;
 	_directions[3].frameCount = 2;
-	_directions[3].frameChangeInterval = 200;
+	_directions[3].frameChangeInterval = 500;
 	_directions[3].lastFrameChange = 0;
 
 	//UP
@@ -300,7 +313,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_deadDirections[0].frames[0] = {15*24,0,24,24};
 	_deadDirections[0].currentFrame = 0;
 	_deadDirections[0].frameCount = 1;
-	_deadDirections[0].frameChangeInterval = 200;
+	_deadDirections[0].frameChangeInterval = 500;
 	_deadDirections[0].lastFrameChange = 0;
 
 	//Down
@@ -309,7 +322,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_deadDirections[1].frames[0] = {13*24,0,24,24};
 	_deadDirections[1].currentFrame = 0;
 	_deadDirections[1].frameCount = 1;
-	_deadDirections[1].frameChangeInterval = 200;
+	_deadDirections[1].frameChangeInterval = 500;
 	_deadDirections[1].lastFrameChange = 0;
 
 	//Left
@@ -318,7 +331,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_deadDirections[2].frames[0] = {11*24,0,24,24};
 	_deadDirections[2].currentFrame = 0;
 	_deadDirections[2].frameCount = 1;
-	_deadDirections[2].frameChangeInterval = 200;
+	_deadDirections[2].frameChangeInterval = 500;
 	_deadDirections[2].lastFrameChange = 0;
 
 	//Right
@@ -327,7 +340,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_deadDirections[3].frames[0] = {14*24,0,24,24};
 	_deadDirections[3].currentFrame = 0;
 	_deadDirections[3].frameCount = 1;
-	_deadDirections[3].frameChangeInterval = 200;
+	_deadDirections[3].frameChangeInterval = 500;
 	_deadDirections[3].lastFrameChange = 0;
 
 	_terrified = {};
@@ -338,7 +351,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_terrified.frames[3] = {11*24,0,24,24};
 	_terrified.currentFrame = 0;
 	_terrified.frameCount = 4;
-	_terrified.frameChangeInterval = 200;
+	_terrified.frameChangeInterval = 500;
 	_terrified.lastFrameChange = 0;
 }
 
@@ -366,11 +379,11 @@ void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
 	}else if (_state == Terrified) {
 		src = _terrified.frames[_terrified.currentFrame];
 	}
-	SDL_Rect dst = _gameElement->getCoordinates();
-	dst.x += round(_position.x*16);
-	dst.y += round(_position.y*16);
-	dst.w = 16;
-	dst.h = 16;
+	SDL_Rect dst = _gameElement->_mapRect;
+	dst.x += round(_position.x*_gameElement->_tileSize);
+	dst.y += round(_position.y*_gameElement->_tileSize);
+	dst.w = _gameElement->_tileSize;
+	dst.h = _gameElement->_tileSize;
 	SDL_RenderCopy(Game::_renderer, _texture, &src, &dst);
 }
 
@@ -388,9 +401,10 @@ void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
     		targetX += speed;
     	}
 
-    	if (round(targetX) != _previous.x && fabs(targetX-round(targetX))<0.05) {
+		double snapThreshold = 0.05;
+    	if (round(targetX) != _previous.x && fabs(targetX-round(targetX))<snapThreshold) {
     		targetX = round(targetX);
-    	}if (round(targetY) != _previous.y && fabs(targetY-round(targetY))<0.05) {
+    	}if (round(targetY) != _previous.y && fabs(targetY-round(targetY))<snapThreshold) {
     		targetY = round(targetY);
     	}
 
@@ -518,7 +532,7 @@ void PlayState::GameElement::Map::readMapString(std::string map) {
 				_map[i][j].content = Cell::None;
 			else if(e == 'd'){
 			    _map[i][j].wall = true;
-				_ghostRespawn = {(double)i,(double)j};
+				_ghostRespawn = {(double)j,(double)i};
 			}
 			else if (e == 's') {
 				_playerRespawn.x = j;
@@ -602,12 +616,12 @@ void PlayState::GameElement::Player::setDirection(direction direction) {
 }
 
 void PlayState::GameElement::Player::render(SDL_Renderer *renderer) {
-	SDL_Rect dst = _gameElement->getCoordinates();
+	SDL_Rect dst = _gameElement->_mapRect;
 	SDL_Rect src = _state == Normal ? _normal.frames[_normal.currentFrame] : _death.frames[_death.currentFrame];
-	dst.x += round(_position.x*16);
-	dst.y += round(_position.y*16);
-	dst.w = 16;
-	dst.h = 16;
+	dst.x += round(_position.x*_gameElement->_tileSize);
+	dst.y += round(_position.y*_gameElement->_tileSize);
+	dst.w = _gameElement->_tileSize;
+	dst.h = _gameElement->_tileSize;
 	SDL_RenderCopyEx(renderer, _gameElement->_player->_texture, &src, &dst,
 	                 _direction == Up ? 270 : _direction == Down ? 90 : 0, nullptr,
 	                 _direction == Left ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
