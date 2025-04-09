@@ -41,7 +41,6 @@ Game::~Game() {
 
 void* Game::Renderer(void* arg) {
 
-
 	int sleepNs = ceil(1e6/_fps);
 	uint64_t start = SDL_GetPerformanceCounter(), end;
 	timespec sleepTime = {0,0};

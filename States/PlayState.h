@@ -9,10 +9,16 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_image.h>
 #include "GameState.h"
+#include "Panel.h"
 #include "UiElement.h"
 
 
 class PlayState :public GameState{
+
+	enum inGameState {
+		Running,
+		Paused,
+	} _gameState;
 
 	class GameElement : public UiElement {
 	public:
@@ -66,8 +72,20 @@ class PlayState :public GameState{
 		void verifyCollision();
 	};
 
-public:
+	class StopMenu : public UiElement {
+		PlayState* _playState;
+		Panel* _panel;
+	public:
+		explicit StopMenu(PlayState* element);
+		~StopMenu();
+		void render(SDL_Renderer* renderer) override;
+		void update() override;
+		void handleInput(SDL_Event& event) override;
+	};
+
+	StopMenu* _stopMenu;
 	GameElement* _game;
+public:
 	explicit PlayState(int32_t level);
 
 	~PlayState() override;
@@ -75,6 +93,9 @@ public:
 	void update() override;
 	void render() override;
 	void handleInput(SDL_Event& event, GameState*& nextState) override;
+
+	void Stop();
+	void Start();
 };
 
 class PlayState::GameElement::Entity {

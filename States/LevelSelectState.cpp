@@ -10,9 +10,9 @@
 #include "PlayState.h"
 #include "../TileRender.h"
 
-void dec_iterator();
-void inc_iterator();
-void load_level();
+void dec_iterator(void* arg);
+void inc_iterator(void* arg);
+void load_level(void* arg);
 
 
 std::string buttons[2] = {"<-", "->"};
@@ -117,15 +117,15 @@ void LevelSelectState::render() {
 }
 
 
-void inc_iterator() {
+void inc_iterator(void* arg) {
 	_level = (_level+1)%_elemSize;
 }
 
-void dec_iterator() {
+void dec_iterator(void* arg) {
 	_level = (_level+_elemSize-1)%_elemSize;
 }
 
-void load_level() {
+void load_level(void* arg) {
 	GameState::_next = new PlayState(_level+1);
 }
 
@@ -133,10 +133,10 @@ bool clicked = false;
 void LevelSelectState::handleInput(SDL_Event& event, GameState*& nextState) {
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_LEFT) {
-			dec_iterator();
+			dec_iterator(nullptr);
 		}
 		else if (event.key.keysym.sym == SDLK_RIGHT) {
-			inc_iterator();
+			inc_iterator(nullptr);
 		}
 	}
 	_button->handleInput(event);

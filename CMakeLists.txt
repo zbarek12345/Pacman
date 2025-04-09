@@ -29,6 +29,10 @@ add_executable(pacman
         States/PlayState.cpp
         States/PlayState.h
         States/GameState.cpp
+        UI_Element/Label.cpp
+        UI_Element/Label.h
+        UI_Element/Panel.cpp
+        UI_Element/Panel.h
 )
 
 add_compile_options(--static -03 -march=native)

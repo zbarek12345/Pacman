@@ -4,6 +4,8 @@
 
 #include "PlayState.h"
 
+#include <Button.h>
+
 #include "../TileRender.h"
 #include "Game.h"
 #include <SDL2/SDL_timer.h>
@@ -11,6 +13,9 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdio>
+#include <MenuState.h>
+
+#include "Label.h"
 
 PlayState::GameElement::GameElement(int level) : UiElement() {
 
@@ -78,6 +83,7 @@ PlayState::GameElement::~GameElement() {
 	for(int i =0;i<4;i++)
 	   delete _ghosts[i];
 	delete _ghosts;
+	SDL_DestroyTexture(_points);
 }
 
 void PlayState::GameElement::render(SDL_Renderer *renderer) {
@@ -139,7 +145,8 @@ void PlayState::GameElement::handleInput(SDL_Event &event) {
 void PlayState::GameElement::calculateMap() {
 	int addSize = 32*4;int i = 1;
 	while (i*addSize<_coordinates.w && i*addSize<_coordinates.h) {i++;}
-	if (i*addSize>_coordinates.w || i*addSize>_coordinates.h){i--;}
+	if (i*addSize>_coordinates.w || i*addSize>_coordinates.h){i = i-1 - (i%2 == 0);}
+	printf("Val : %d\n", i);
 	_tileSize = i*4;
 	printf("%d\n", _tileSize);
 	int mapSize = i*addSize;
@@ -152,27 +159,113 @@ void PlayState::GameElement::calculateMap() {
 void PlayState::GameElement::verifyCollision() {
 }
 
+PlayState::StopMenu::StopMenu(PlayState *element) {
+	_playState = element;
+	_panel = new Panel();
+	_panel->setCoordinatesf(0.25,0.25,0.5, 0.5);
+	_panel->setBorderColor({186, 168, 2});
+	_panel->setBorderWidth(10);
+
+	Label* pause_label = new Label();
+	pause_label->setCoordinatesf(0.25,0.25,0.5, 0.20);
+	pause_label->setText("Pause Menu");
+	pause_label->setFont(Game::_font);
+	pause_label->setTextColor({186, 168, 2});
+	pause_label->setTextAlign(Label::CENTER);
+	pause_label->setTextSize(50);
+
+	Button* cont = new Button();
+	cont->setCoordinatesf(0.3,0.45, 0.4, 0.1);
+	cont->setColor({186, 168, 2});
+	cont->setFont(Game::_font);
+	cont->setText("Continue");
+	cont->setArgument(_playState);
+	cont->onClick([](void* arg) {
+		PlayState* element = (PlayState*)arg;
+		element->Start();
+	});
+
+	Button* mainMenu = new Button();
+	mainMenu->setCoordinatesf(0.3,0.6, 0.4, 0.1);
+	mainMenu->setColor({186, 168, 2});
+	mainMenu->setFont(Game::_font);
+	mainMenu->setText("Main Menu");
+	mainMenu->onClick([](void* arg) {GameState::_next = new MenuState(Game::_renderer);});
+
+	_panel->addChild(pause_label);
+	_panel->addChild(cont);
+	_panel->addChild(mainMenu);
+}
+
+PlayState::StopMenu::~StopMenu() {
+	delete _panel;
+}
+
+void PlayState::StopMenu::render(SDL_Renderer *renderer) {
+	_panel->render(renderer);
+}
+
+void PlayState::StopMenu::update() {
+	_panel->update();
+}
+
+void PlayState::StopMenu::handleInput(SDL_Event &event) {
+	_panel->handleInput(event);
+}
+
 PlayState::PlayState(int32_t level): GameState(Game::_renderer) {
 	_game = new GameElement(level);
 	_game->setCoordinatesf(0.1, 0.1, 0.8, 0.8);
 	_game->calculateMap();
+	_next = nullptr;
+	_gameState = Running;
+	_stopMenu = new StopMenu(this);
 }
 
 PlayState::~PlayState() {
 	delete _game;
+	delete _stopMenu;
 }
 
 void PlayState::update() {
-	_game->update();
+	if (_gameState != Paused) {
+		_game->update();
+	}
 }
 
 void PlayState::render() {
 	SDL_RenderClear(Game::_renderer);
 	_game->render(Game::_renderer);
+	if (_gameState == Paused) {
+		_stopMenu->render(Game::_renderer);
+	}
 }
 
 void PlayState::handleInput(SDL_Event &event, GameState *&nextState) {
+	if (event.type == SDL_KEYDOWN) {
+		if (event.key.keysym.sym == SDLK_ESCAPE) {
+			Stop();
+		}
+	}
 	_game->handleInput(event);
+	if (_gameState == Paused) {
+		_stopMenu->handleInput(event);
+	}
+
+	if (_next != nullptr) {
+		auto cstate = nextState;
+		nextState = _next;
+		delete cstate;
+		_next = nullptr;
+	}
+}
+
+void PlayState::Stop() {
+	_gameState = Paused;
+}
+
+void PlayState::Start() {
+	_gameState = Running;
 }
 
 void PlayState::GameElement::Entity::updateTarget(){
@@ -227,8 +320,8 @@ void PlayState::GameElement::Entity::updateDirection(int x, int y) {
         double bestCost = 1e8;
 
         for(int i =0;i<4;i++){
-            if(_ghost == Blinky)
-                printf("%d : %f\n", i, costs[i]);
+            //if(_ghost == Blinky)
+                //printf("%d : %f\n", i, costs[i]);
             if(costs[i]<bestCost){
                 _direction = (direction)i;
                 bestCost = costs[i];
@@ -247,7 +340,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	//printf("Start %d : %f %f\n", ghost, _position.x, _position.y);
 	_previous = _spawn;
 	_direction = (direction)(rand()%4);
-	_state = Normal;
+	_state = Chasing;
 	_texture = nullptr;
 	switch(_ghost){
 	    case Blinky:
@@ -328,7 +421,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	//Left
 	_deadDirections[2] = {};
 	_deadDirections[2].frames = new SDL_Rect[1];
-	_deadDirections[2].frames[0] = {11*24,0,24,24};
+	_deadDirections[2].frames[0] = {14*24,0,24,24};
 	_deadDirections[2].currentFrame = 0;
 	_deadDirections[2].frameCount = 1;
 	_deadDirections[2].frameChangeInterval = 500;
@@ -337,7 +430,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	//Right
 	_deadDirections[3] = {};
 	_deadDirections[3].frames = new SDL_Rect[1];
-	_deadDirections[3].frames[0] = {14*24,0,24,24};
+	_deadDirections[3].frames[0] = {12*24,0,24,24};
 	_deadDirections[3].currentFrame = 0;
 	_deadDirections[3].frameCount = 1;
 	_deadDirections[3].frameChangeInterval = 500;
@@ -391,22 +484,51 @@ void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
         updateTarget();
     	double speed = Game::_speed*deltaNanos/1e9; // Correct time calculation
     	double targetX = _position.x, targetY = _position.y;
-    	if (_direction == Up) {
-    		targetY -= speed;
-    	}else if (_direction == Down) {
-    		targetY += speed;
-    	}else if (_direction == Left) {
-    		targetX -= speed;
-    	}else if (_direction == Right) {
-    		targetX += speed;
-    	}
+  //   	if (_direction == Up) {
+  //   		targetY -= speed;
+  //   	}else if (_direction == Down) {
+  //   		targetY += speed;
+  //   	}else if (_direction == Left) {
+  //   		targetX -= speed;
+  //   	}else if (_direction == Right) {
+  //   		targetX += speed;
+  //   	}
+	 //
+		// double snapThreshold = 0.05;
+		// if (round(targetX) != _previous.x && fabs(targetX-round(targetX))<snapThreshold) {
+		// 	targetX = round(targetX);
+		// }if (round(targetY) != _previous.y && fabs(targetY-round(targetY))<snapThreshold) {
+		// 	targetY = round(targetY);
+		// }
 
-		double snapThreshold = 0.05;
-    	if (round(targetX) != _previous.x && fabs(targetX-round(targetX))<snapThreshold) {
-    		targetX = round(targetX);
-    	}if (round(targetY) != _previous.y && fabs(targetY-round(targetY))<snapThreshold) {
-    		targetY = round(targetY);
-    	}
+
+
+		switch (_direction) {
+        case Up:
+            targetY -= speed;
+            if (ceil(targetY) != _previous.y) {
+                targetY = ceil(targetY);
+            }
+            break;
+        case Down:
+            targetY += speed;
+            if (floor(targetY) != _previous.y) {
+                targetY = floor(targetY);
+            }
+            break;
+        case Left:
+            targetX -= speed;
+            if (ceil(targetX) != _previous.x) {
+                targetX = ceil(targetX);
+            }
+            break;
+        case Right:
+            targetX += speed;
+			if (floor(targetX) != _previous.x) {
+				targetX = floor(targetX);
+			}
+            break;
+		}
 
     	_position.x = targetX;
     	_position.y = targetY;
@@ -425,7 +547,8 @@ void PlayState::GameElement::Entity::BlinkyTargeting() {
 	if (_state == Normal) {
 		_target = {32,0};
 	}else if (_state == Dead) {
-		_target = {32,0};
+		_target = _gameElement->_map->getGhostRespawn();
+		_target.y ++;
 	}else if (_state == Chasing) {
 		_target = _gameElement->_player->getPosition();
 	}
@@ -435,7 +558,8 @@ void PlayState::GameElement::Entity::PinkyTargeting(){
     if (_state == Normal) {
 		_target = {0,0};
 	}else if (_state == Dead) {
-		_target = {0,0};
+		_target = _gameElement->_map->getGhostRespawn();
+		_target.y ++;
 	}else if (_state == Chasing) {
 		_target = _gameElement->_player->getPosition();
 		direction playerDir = _gameElement->_player->getDirection();
@@ -460,7 +584,8 @@ void PlayState::GameElement::Entity::ClydeTargeting(){
     if (_state == Normal) {
 		_target = {0,32};
 	}else if (_state == Dead) {
-		_target = {0,32};
+		_target = _gameElement->_map->getGhostRespawn();
+		_target.y ++;
 	}else if (_state == Chasing) {
 	   Coordinates player = _gameElement->_player->getPosition();
 	   double dist = sqrt(pow(_position.x - player.x, 2)+pow(_position.y - player.y,2));
@@ -476,7 +601,8 @@ void PlayState::GameElement::Entity::InkyTargeting(){
     if (_state == Normal) {
 		_target = {32,32};
 	}else if (_state == Dead) {
-		_target = {32,32};
+		_target = _gameElement->_map->getGhostRespawn();
+		_target.y ++;
 	}else if (_state == Chasing) {
 		_target = _gameElement->_player->getPosition();
 		direction playerDir = _gameElement->_player->getDirection();

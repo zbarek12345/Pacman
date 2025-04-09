@@ -81,11 +81,11 @@ void Button::setFontSize(int i) {
 	_fontSize = i;
 }
 
-void Button::onClick(void (*callback)()) {
+void Button::onClick(void (*callback)(void* arg)) {
 	_onClick = callback;
 }
 
-void Button::setText(std::string& text) {
+void Button::setText(std::string text) {
 	_text = text;
 }
 
@@ -97,7 +97,7 @@ void Button::handleInput(SDL_Event& event) {
 	if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT && isInside({event.button.x, event.button.y})) {
 		_color = _clickedColor;
 		//_text = "clicked";
-		if (_onClick != nullptr) _onClick();
+		if (_onClick != nullptr) _onClick(_arg);
 	}
 	else if (isInside({event.button.x, event.button.y})) {
 		//_text = "hovered";

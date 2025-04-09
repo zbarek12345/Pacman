@@ -29,8 +29,8 @@ bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
     *window = SDL_CreateWindow("SDL2 Texture Demo",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                         1080,
-                                          720,
+                                         1440,
+                                          1080,
                                           SDL_WINDOW_SHOWN);
 
     if (!*window) {

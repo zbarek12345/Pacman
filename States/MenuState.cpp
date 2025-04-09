@@ -30,7 +30,7 @@ MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	img->setTexture(SDL_CreateTextureFromSurface(_renderer, surface));
 	SDL_FreeSurface(surface);
 
-	Play->onClick([](){_next = new LevelSelectState(Game::_renderer);});
+	Play->onClick([](void* arg){_next = new LevelSelectState(Game::_renderer);});
 	_children.push_back(img);
 	_children.push_back(Play);
 	_children.push_back(Exit);

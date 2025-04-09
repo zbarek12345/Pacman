@@ -17,7 +17,8 @@ class Button : public UiElement {
 	uint8_t _borderWidth = 1;
 	SDL_Texture* _texture;
 	SDL_Color _color{}, _baseColor{}, _borderColor{}, _hoverColor{}, _clickedColor{};
-	void(*_onClick)() = nullptr;
+	void(*_onClick)(void* arg) = nullptr;
+	void* _arg = nullptr;
 	std::string _text;
 	int16_t _fontSize = 16;
 	TTF_Font *_font;
@@ -32,9 +33,9 @@ public:
 
 	void render(SDL_Renderer* renderer) override;
 
-	void onClick(void (*callback)());
+	void onClick(void (*callback)(void * arg));
 
-	void setText(std::string &text);
+	void setText(std::string text);
 
 	void handleInput(SDL_Event &event) override;
 
@@ -61,6 +62,8 @@ public:
 
 	void setOnClickColor(SDL_Color color);
 
+	void setArgument(void *arg);
+
 	void setTexture(SDL_Texture* texture);
 	SDL_Rect getCoordinates() const;
 	SDL_Color getColor() const;
@@ -68,4 +71,7 @@ public:
 	void setFontSize(int i);
 };
 
+inline void Button::setArgument(void* arg) {
+	_arg = arg;
+}
 #endif //BUTTON_H
