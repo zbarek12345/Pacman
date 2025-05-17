@@ -51,6 +51,8 @@ PlayState::GameElement::GameElement(int level) : UiElement() {
 	_ghosts[2] = new Entity(this, ghostResp, Entity::Pinky);
 	ghostResp.y ++;
 	_ghosts[3] = new Entity(this, ghostResp, Entity::Clyde);
+
+	_level = level;
 }
 
 PlayState::GameElement::GameElement(SDL_Rect rect, int level):UiElement(rect){
@@ -122,9 +124,12 @@ void PlayState::GameElement::update() {
 		delta = 0;
 	}
 
-	_player->updatePosition(delta);
-	for(int i =0;i<4;i++)
-	   _ghosts[i]->updatePosition(delta);
+	if (_gameState == Running) {
+		_player->updatePosition(delta);
+		for(int i =0;i<4;i++)
+			_ghosts[i]->updatePosition(delta);
+	}
+
 	previousTime = SDL_GetPerformanceCounter();
 }
 
@@ -156,7 +161,43 @@ void PlayState::GameElement::calculateMap() {
 	_mapRect.h = mapSize;
 }
 
+void PlayState::GameElement::restart() {
+	_map->readMapString(Game::_databaseController->getLevel(_level).map);
+}
+
+void PlayState::GameElement::restartPostions() {
+	delete _player;
+	_player = new Player(_map->getPlayerRespawn(), this);
+
+	for (int i =0;i<4;i++) {
+		delete _ghosts[i];
+	}
+
+	Coordinates ghostResp = _map->getGhostRespawn();
+	ghostResp.y-=1;
+	_ghosts[0] = new Entity(this, ghostResp, Entity::Blinky);
+	ghostResp.y +=2;
+	_ghosts[1] = new Entity(this, ghostResp, Entity::Inky );
+	ghostResp.x ++;
+	_ghosts[2] = new Entity(this, ghostResp, Entity::Pinky);
+	ghostResp.y ++;
+	_ghosts[3] = new Entity(this, ghostResp, Entity::Clyde);
+}
+
 void PlayState::GameElement::verifyCollision() {
+
+	auto playerCoord = _player->getPosition();
+
+	for (int i =0;i<4;i++) {
+		auto ghostCoord = _ghosts[i]->getPosition();
+
+		if (sqrt(pow(ghostCoord.x - playerCoord.x,2) + pow(ghostCoord.y - playerCoord.y,2))<0.5) {
+			if (_ghosts[i]->getState() == Entity::Terrified)
+				_ghosts[i]->getEaten();
+			else
+				_player->Kill();
+		}
+	}
 }
 
 PlayState::StopMenu::StopMenu(PlayState *element) {
@@ -218,7 +259,7 @@ PlayState::PlayState(int32_t level): GameState(Game::_renderer) {
 	_game->setCoordinatesf(0.1, 0.1, 0.8, 0.8);
 	_game->calculateMap();
 	_next = nullptr;
-	_gameState = Running;
+	this->_game->_gameState = GameElement::Running;
 	_stopMenu = new StopMenu(this);
 }
 
@@ -228,15 +269,13 @@ PlayState::~PlayState() {
 }
 
 void PlayState::update() {
-	if (_gameState != Paused) {
-		_game->update();
-	}
+	_game->update();
 }
 
 void PlayState::render() {
 	SDL_RenderClear(Game::_renderer);
 	_game->render(Game::_renderer);
-	if (_gameState == Paused) {
+	if (_game->_gameState == GameElement::Paused) {
 		_stopMenu->render(Game::_renderer);
 	}
 }
@@ -247,9 +286,12 @@ void PlayState::handleInput(SDL_Event &event, GameState *&nextState) {
 			Stop();
 		}
 	}
-	_game->handleInput(event);
-	if (_gameState == Paused) {
+
+	if (_game->_gameState == GameElement::Paused) {
 		_stopMenu->handleInput(event);
+	}
+	else {
+		_game->handleInput(event);
 	}
 
 	if (_next != nullptr) {
@@ -261,11 +303,12 @@ void PlayState::handleInput(SDL_Event &event, GameState *&nextState) {
 }
 
 void PlayState::Stop() {
-	_gameState = Paused;
+	_game->_gameState = GameElement::Paused;
 }
 
 void PlayState::Start() {
-	_gameState = Running;
+	_game->_gameState = GameElement::Running;
+	_game->previousTime = SDL_GetTicks();
 }
 
 void PlayState::GameElement::Entity::updateTarget(){
@@ -339,21 +382,26 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_ghost = ghost;
 	//printf("Start %d : %f %f\n", ghost, _position.x, _position.y);
 	_previous = _spawn;
+	_released = false;
 	_direction = (direction)(rand()%4);
 	_state = Chasing;
 	_texture = nullptr;
 	switch(_ghost){
 	    case Blinky:
 		    _texture = IMG_LoadTexture(Game::_renderer, "../Textures/blinky.png");
+			_releaseTime = SDL_GetTicks();
 		break;
 		case Inky:
             _texture = IMG_LoadTexture(Game::_renderer,"../Textures/inky.png");
+			_releaseTime = SDL_GetTicks() + 2000;
         break;
         case Pinky:
 			_texture = IMG_LoadTexture(Game::_renderer,"../Textures/pinky.png");
+			_releaseTime = SDL_GetTicks() + 4000;
 		break;
 		case Clyde:
             _texture = IMG_LoadTexture(Game::_renderer,"../Textures/clyde.png");
+			_releaseTime = SDL_GetTicks() + 6000;
         break;
 	}
 	if(!_texture)
@@ -484,24 +532,6 @@ void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
         updateTarget();
     	double speed = Game::_speed*deltaNanos/1e9; // Correct time calculation
     	double targetX = _position.x, targetY = _position.y;
-  //   	if (_direction == Up) {
-  //   		targetY -= speed;
-  //   	}else if (_direction == Down) {
-  //   		targetY += speed;
-  //   	}else if (_direction == Left) {
-  //   		targetX -= speed;
-  //   	}else if (_direction == Right) {
-  //   		targetX += speed;
-  //   	}
-	 //
-		// double snapThreshold = 0.05;
-		// if (round(targetX) != _previous.x && fabs(targetX-round(targetX))<snapThreshold) {
-		// 	targetX = round(targetX);
-		// }if (round(targetY) != _previous.y && fabs(targetY-round(targetY))<snapThreshold) {
-		// 	targetY = round(targetY);
-		// }
-
-
 
 		switch (_direction) {
         case Up:
@@ -532,6 +562,17 @@ void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
 
     	_position.x = targetX;
     	_position.y = targetY;
+
+		if (_state == Dead && sqrt(pow(_position.x - _gameElement->_map->getGhostRespawn().x, 2) + pow(_position.y- _gameElement->_map->getGhostRespawn().y, 2)) <= 2) {
+			_position.x = _position.x - _gameElement->_map->getGhostRespawn().x;
+			_position.y = _position.y - _gameElement->_map->getGhostRespawn().y + 2;
+		}
+
+		if (!_released && SDL_GetTicks()>_releaseTime) {
+			_released = true;
+			_position = _gameElement->_map->getGhostRespawn();
+			_position.y--;
+		}
 
     	if (targetX == round(targetX) && targetY == round(targetY)) {
     		updateDirection(targetX, targetY);
@@ -595,6 +636,15 @@ void PlayState::GameElement::Entity::ClydeTargeting(){
 	    else
 			_target = player;
 	}
+}
+
+PlayState::GameElement::Entity::state PlayState::GameElement::Entity::getState() {
+	return _state;
+}
+
+void PlayState::GameElement::Entity::getEaten() {
+	_state = Dead;
+	_releaseTime = SDL_GetTicks() + 1e4;
 }
 
 void PlayState::GameElement::Entity::InkyTargeting(){
@@ -816,6 +866,10 @@ void PlayState::GameElement::Player::updatePosition(int deltaNanos) {
 
 PlayState::GameElement::Coordinates PlayState::GameElement::Player::getPosition(){
     return _position;
+}
+
+void PlayState::GameElement::Player::Kill() {
+	_state = Dead;
 }
 
 PlayState::GameElement::Player::~Player() {

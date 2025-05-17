@@ -21,8 +21,14 @@ public:
 
 	SDL_Rect _coordinates;
 
+	/// Renders an UIelement object
+	/// @param renderer Pointer to the sdl2 renderer
 	virtual void render(SDL_Renderer* renderer) = 0;
+
+	///Updates UIelement object
 	virtual void update() = 0;
+
+	///Enables input handling for the UIelement
 	virtual void handleInput(SDL_Event& event) = 0;
 
 	void setPosition(int x, int y) ;

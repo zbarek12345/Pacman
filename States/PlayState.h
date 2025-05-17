@@ -15,13 +15,18 @@
 
 class PlayState :public GameState{
 
-	enum inGameState {
-		Running,
-		Paused,
-	} _gameState;
+
 
 	class GameElement : public UiElement {
+
+
 	public:
+
+		enum inGameState {
+			Running,
+			Paused,
+		} _gameState;
+
 		GameElement(int level);
 		GameElement(SDL_Rect rect, int level);
 		~GameElement();
@@ -29,6 +34,9 @@ class PlayState :public GameState{
 		void update() override;
 		void handleInput(SDL_Event& event) override;
 		void calculateMap();
+		void restart();
+		void restartPostions();
+		void stopUpdate();
 
 		struct Coordinates {
 			double x;
@@ -57,6 +65,7 @@ class PlayState :public GameState{
 		class Player;
 		int _score;
 		int _lives;
+		int _level;
 		SDL_Texture* _mapTexture;
 
 		Map* _map;
@@ -99,19 +108,22 @@ public:
 };
 
 class PlayState::GameElement::Entity {
-
+public:
 	enum state{
 		Normal,
 		Chasing,
 		Terrified,
 		Dead
-	} _state;
-
+	};
+private:
+	state _state;
 	Animation _directions[4],_deadDirections[4], _terrified;
 	direction _direction;
 	Coordinates _position, _target, _spawn, _previous;
 	GameElement* _gameElement;
 	SDL_Texture* _texture;
+	bool _released = false;
+	uint32_t _releaseTime;
 
 	void updateTarget();
 	void updateDirection(int x, int y);
@@ -136,6 +148,9 @@ public:
 	void updatePosition(int deltaNanos);
 	Coordinates getPosition();
 	void setTexture(SDL_Texture* texture);
+	state getState();
+	void getEaten();
+	void setState(state state);
 };
 
 class PlayState::GameElement::Map {
@@ -192,6 +207,7 @@ public:
 	~Player();
 
 	Coordinates getPosition();
+	void Kill();
 };
 
 #endif //PLAYSTATE_H
