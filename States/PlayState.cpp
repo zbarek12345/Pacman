@@ -84,7 +84,7 @@ PlayState::GameElement::~GameElement() {
 	SDL_DestroyTexture(_mapTexture);
 	for(int i =0;i<4;i++)
 	   delete _ghosts[i];
-	delete _ghosts;
+	delete[] _ghosts;
 	SDL_DestroyTexture(_points);
 }
 
@@ -118,6 +118,7 @@ void PlayState::GameElement::render(SDL_Renderer *renderer) {
 	SDL_RenderDrawRect(renderer, &_coordinates);
 }
 
+
 void PlayState::GameElement::update() {
 	uint64_t delta = SDL_GetPerformanceCounter() - previousTime;
 	if (previousTime == -1) {
@@ -126,8 +127,6 @@ void PlayState::GameElement::update() {
 
 	if (_gameState == Running) {
 		_player->updatePosition(delta);
-		for(int i =0;i<4;i++)
-			_ghosts[i]->updatePosition(delta);
 	}
 
 	previousTime = SDL_GetPerformanceCounter();
@@ -308,7 +307,7 @@ void PlayState::Stop() {
 
 void PlayState::Start() {
 	_game->_gameState = GameElement::Running;
-	_game->previousTime = SDL_GetTicks();
+	_game->previousTime = SDL_GetPerformanceCounter();
 }
 
 void PlayState::GameElement::Entity::updateTarget(){
@@ -335,6 +334,7 @@ bool PlayState::GameElement::Entity::isWall(int x, int y){
 bool PlayState::GameElement::Entity::isCrossroad(int x, int y){
     return (isWall(x-1, y) + isWall(x+1, y)+isWall(x, y+1) + isWall(x, y-1))<2;
 }
+
 void PlayState::GameElement::Entity::updateDirection(int x, int y) {
     Coordinates nextPos = _position;
     if(_direction == Up)
@@ -374,6 +374,19 @@ void PlayState::GameElement::Entity::updateDirection(int x, int y) {
     }
 }
 
+void* PlayState::GameElement::Entity::ghostThread(void* arg){
+	Entity* entity = (Entity*)arg;
+	auto previous = SDL_GetPerformanceCounter();
+	while(entity->_thread){
+		auto delta = SDL_GetPerformanceCounter() - previous;
+
+		if(entity->_gameElement->_gameState == Running)
+			entity->updatePosition(delta);
+		previous = SDL_GetPerformanceCounter();
+		SDL_Delay(15);
+	}
+
+}
 
 PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spawn, ghostType ghost) {
 	_gameElement = gameElement;
@@ -386,6 +399,7 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_direction = (direction)(rand()%4);
 	_state = Chasing;
 	_texture = nullptr;
+	_thread = true;
 	switch(_ghost){
 	    case Blinky:
 		    _texture = IMG_LoadTexture(Game::_renderer, "../Textures/blinky.png");
@@ -494,9 +508,13 @@ PlayState::GameElement::Entity::Entity(GameElement *gameElement,Coordinates spaw
 	_terrified.frameCount = 4;
 	_terrified.frameChangeInterval = 500;
 	_terrified.lastFrameChange = 0;
+
+	pthread_create(&_ghostThread, nullptr, ghostThread, this);
 }
 
 PlayState::GameElement::Entity::~Entity() {
+	_thread = false;
+	pthread_join(_ghostThread, nullptr);
 	for (int i = 0; i < 4; i++) {
 		delete[] _directions[i].frames;
 	}
@@ -528,57 +546,57 @@ void PlayState::GameElement::Entity::render(SDL_Renderer *renderer) {
 	SDL_RenderCopy(Game::_renderer, _texture, &src, &dst);
 }
 
-    void PlayState::GameElement::Entity::updatePosition(int deltaNanos) {
-        updateTarget();
-    	double speed = Game::_speed*deltaNanos/1e9; // Correct time calculation
-    	double targetX = _position.x, targetY = _position.y;
+void PlayState::GameElement::Entity::updatePosition(uint64_t deltaNanos) {
+	updateTarget();
+	double speed = Game::_speed*deltaNanos/1e9; // Correct time calculation
+	double targetX = _position.x, targetY = _position.y;
 
-		switch (_direction) {
-        case Up:
-            targetY -= speed;
-            if (ceil(targetY) != _previous.y) {
-                targetY = ceil(targetY);
-            }
-            break;
-        case Down:
-            targetY += speed;
-            if (floor(targetY) != _previous.y) {
-                targetY = floor(targetY);
-            }
-            break;
-        case Left:
-            targetX -= speed;
-            if (ceil(targetX) != _previous.x) {
-                targetX = ceil(targetX);
-            }
-            break;
-        case Right:
-            targetX += speed;
-			if (floor(targetX) != _previous.x) {
-				targetX = floor(targetX);
-			}
-            break;
+	switch (_direction) {
+	case Up:
+		targetY -= speed;
+		if (ceil(targetY) != _previous.y) {
+			targetY = ceil(targetY);
 		}
-
-    	_position.x = targetX;
-    	_position.y = targetY;
-
-		if (_state == Dead && sqrt(pow(_position.x - _gameElement->_map->getGhostRespawn().x, 2) + pow(_position.y- _gameElement->_map->getGhostRespawn().y, 2)) <= 2) {
-			_position.x = _position.x - _gameElement->_map->getGhostRespawn().x;
-			_position.y = _position.y - _gameElement->_map->getGhostRespawn().y + 2;
+		break;
+	case Down:
+		targetY += speed;
+		if (floor(targetY) != _previous.y) {
+			targetY = floor(targetY);
 		}
-
-		if (!_released && SDL_GetTicks()>_releaseTime) {
-			_released = true;
-			_position = _gameElement->_map->getGhostRespawn();
-			_position.y--;
+		break;
+	case Left:
+		targetX -= speed;
+		if (ceil(targetX) != _previous.x) {
+			targetX = ceil(targetX);
 		}
+		break;
+	case Right:
+		targetX += speed;
+		if (floor(targetX) != _previous.x) {
+			targetX = floor(targetX);
+		}
+		break;
+	}
 
-    	if (targetX == round(targetX) && targetY == round(targetY)) {
-    		updateDirection(targetX, targetY);
-    		_previous = _position;
-    	}
-    }
+	_position.x = targetX;
+	_position.y = targetY;
+
+	if (_state == Dead && sqrt(pow(_position.x - _gameElement->_map->getGhostRespawn().x, 2) + pow(_position.y- _gameElement->_map->getGhostRespawn().y, 2)) <= 2) {
+		_position.x = _position.x - _gameElement->_map->getGhostRespawn().x;
+		_position.y = _position.y - _gameElement->_map->getGhostRespawn().y + 2;
+	}
+
+	if (!_released && SDL_GetTicks()>_releaseTime) {
+		_released = true;
+		_position = _gameElement->_map->getGhostRespawn();
+		_position.y--;
+	}
+
+	if (targetX == round(targetX) && targetY == round(targetY)) {
+		updateDirection(targetX, targetY);
+		_previous = _position;
+	}
+}
 
 PlayState::GameElement::Coordinates PlayState::GameElement::Entity::getPosition() {
 	return _position;
@@ -803,7 +821,7 @@ void PlayState::GameElement::Player::render(SDL_Renderer *renderer) {
 	                 _direction == Left ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
 }
 
-void PlayState::GameElement::Player::updatePosition(int deltaNanos) {
+void PlayState::GameElement::Player::updatePosition(uint64_t deltaNanos) {
 	double speed = Game::_speed*deltaNanos/1e9;// Correct time calculation
 	double targetX = _position.x, targetY = _position.y;
 
@@ -874,5 +892,5 @@ void PlayState::GameElement::Player::Kill() {
 
 PlayState::GameElement::Player::~Player() {
 	SDL_DestroyTexture(_texture);
-	delete _normal.frames;
+	delete[] _normal.frames;
 }

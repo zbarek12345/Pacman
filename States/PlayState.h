@@ -16,7 +16,7 @@
 class PlayState :public GameState{
 
 
-
+public:
 	class GameElement : public UiElement {
 
 
@@ -124,6 +124,8 @@ private:
 	SDL_Texture* _texture;
 	bool _released = false;
 	uint32_t _releaseTime;
+	pthread_t _ghostThread;
+	bool _thread;
 
 	void updateTarget();
 	void updateDirection(int x, int y);
@@ -133,6 +135,7 @@ private:
 	void InkyTargeting();
 	void PinkyTargeting();
 	void ClydeTargeting();
+	static void* ghostThread(void* arg);
 
 public:
     enum ghostType{
@@ -145,7 +148,7 @@ public:
 	explicit Entity(GameElement* gameElement, Coordinates spawn, ghostType ghost);
 	~Entity();
 	void render(SDL_Renderer* renderer);
-	void updatePosition(int deltaNanos);
+	void updatePosition(uint64_t deltaNanos);
 	Coordinates getPosition();
 	void setTexture(SDL_Texture* texture);
 	state getState();
@@ -203,7 +206,7 @@ public:
 	void setDirection(direction direction);
 	direction getDirection();
 	void render(SDL_Renderer* renderer);
-	void updatePosition(int deltaNanos);
+	void updatePosition(uint64_t deltaNanos);
 	~Player();
 
 	Coordinates getPosition();

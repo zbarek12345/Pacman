@@ -97,6 +97,7 @@ LevelSelectState::~LevelSelectState() {
 	SDL_DestroyTexture(_rightButton->getTexture());
 	delete _leftButton;
 	delete _rightButton;
+	delete _levelPreview;
 }
 
 void LevelSelectState::update() {

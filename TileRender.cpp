@@ -17,12 +17,14 @@ void TileRender::LoadTexture(SDL_Renderer* renderer,std::string path) {
 		std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
 	}
 	_texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
 
 	tempSurface = IMG_Load("../Textures/tileset.png");
 	if (!tempSurface) {
 		std::cerr << "Failed to load image: " << IMG_GetError() << std::endl;
 	}
 	_texture2 = SDL_CreateTextureFromSurface(renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
 }
 
 void TileRender::readMapString(std::string map) {
