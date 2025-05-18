@@ -226,8 +226,10 @@ void PlayState::GameElement::verifyCollision() {
 			auto ghoststate = _ghosts[i]->getState();
 			if (ghoststate== Entity::Terrified)
 				_ghosts[i]->getEaten();
-			else if (ghoststate == Entity::Chasing|| ghoststate == Entity::Normal)
+			else if ((ghoststate == Entity::Chasing||ghoststate == Entity::Normal)&& !_player->isDead()) {
+				_lives--;
 				_player->Kill();
+			}
 		}
 	}
 }
@@ -263,7 +265,7 @@ PlayState::StopMenu::StopMenu(PlayState *element) {
 	mainMenu->setColor({186, 168, 2});
 	mainMenu->setFont(Game::_font);
 	mainMenu->setText("Main Menu");
-	mainMenu->onClick([](void* arg) {GameState::_next = new MenuState(Game::_renderer);});
+	mainMenu->onClick([](void* arg) {_next = new MenuState(Game::_renderer);});
 
 	_panel->addChild(pause_label);
 	_panel->addChild(cont);
@@ -796,7 +798,7 @@ void PlayState::GameElement::Entity::setState(state state) {
 			_direction = (direction)( _direction %2 == 0 ? _direction+1: _direction-1);
 		}
 	}
-	else if (_state == Terrified && SDL_GetTicks() > _terrifiedTime) {
+	else if (_state == Terrified && SDL_GetTicks() < _terrifiedTime) {
 		return;
 	}
 	else {

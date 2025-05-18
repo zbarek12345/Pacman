@@ -62,6 +62,7 @@ GameOverState::GameOverState(SDL_Renderer *renderer, int level) : GameState(rend
 	mainMenuButton->setCoordinatesf(0.3,0.7,0.4,0.1);
 
 	rerunLevelButton->onClick(rerunLevel);
+	rerunLevelButton->setArgument(this);
 	levelSelectButton->onClick([](void* arg){_next = new LevelSelectState(Game::_renderer);});
 	mainMenuButton->onClick([](void* arg){_next = new MenuState(Game::_renderer);});
 

@@ -50,7 +50,7 @@ GameWonState::GameWonState(SDL_Renderer* renderer, int32_t level) : GameState(re
 	levelSelectButton->setText("Select Another Level");
 	mainMenuButton->setText("Main Menu");
 
-	name->setText("Game Over");
+	name->setText("You Win");
 	name->setTextAlign(Label::CENTER);
 	name->setFont(Game::_font);
 	name->setTextColor({255,255,255});
@@ -62,6 +62,7 @@ GameWonState::GameWonState(SDL_Renderer* renderer, int32_t level) : GameState(re
 	mainMenuButton->setCoordinatesf(0.3,0.7,0.4,0.1);
 
 	rerunLevelButton->onClick(rerunLevel);
+	rerunLevelButton->setArgument(this);
 	levelSelectButton->onClick([](void* arg){_next = new LevelSelectState(Game::_renderer);});
 	mainMenuButton->onClick([](void* arg){_next = new MenuState(Game::_renderer);});
 
@@ -85,6 +86,7 @@ GameWonState::~GameWonState() {
 void GameWonState::rerunLevel(void *arg) {
 	auto state = (GameWonState*)arg;
 	_next = new PlayState(state->_level);
+	printf("Rerun Level ; %d level");
 }
 
 void GameWonState::update() {
@@ -102,5 +104,12 @@ void GameWonState::render() {
 void GameWonState::handleInput(SDL_Event &event, GameState *&nextState) {
 	for (auto& e : _children) {
 		e->handleInput(event);
+	}
+
+	if (_next != nullptr) {
+		GameState *cstate = nextState;
+		nextState = _next;
+		_next = nullptr;
+		delete cstate;
 	}
 }
