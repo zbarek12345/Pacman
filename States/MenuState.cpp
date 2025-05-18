@@ -25,12 +25,15 @@ MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	Play->setHoverColor(hover);Exit->setHoverColor(hover);
 	Play->setOnClickColor(pressed);Exit->setOnClickColor(pressed);
 	Play->setBorderWidth(2);Exit->setBorderWidth(2);
+	Play->setText("Play");Exit->setText("Exit");
+	Play->setFontSize(50);Exit->setFontSize(50);
 	Play->setBorderColor({0,0,0,255});Exit->setBorderColor({0,0,0,255});
 	SDL_Surface* surface = IMG_Load("../Textures/PAC-MAN-0.webp");
 	img->setTexture(SDL_CreateTextureFromSurface(_renderer, surface));
 	SDL_FreeSurface(surface);
 
 	Play->onClick([](void* arg){_next = new LevelSelectState(Game::_renderer);});
+	Exit->onClick([](void* arg){Game::_running = SDL_FALSE;});
 	_children.push_back(img);
 	_children.push_back(Play);
 	_children.push_back(Exit);

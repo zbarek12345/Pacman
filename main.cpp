@@ -104,8 +104,9 @@ int main(int argc, char* argv[]) {
         }
         printf("Font Loaded\n");
 
-        Game game = Game(window, renderer);
+        auto game = new Game(window, renderer);
         Game::run();
+        delete game;
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         TTF_Quit();

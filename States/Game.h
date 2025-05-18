@@ -30,7 +30,7 @@ public:
 	static int _fps;
 	static bool _render;
 	static pthread_t _renderThread;
-
+	static SDL_bool _running;
 	Game(SDL_Window* window, SDL_Renderer* renderer);
 
 	static void* Renderer(void* arg);

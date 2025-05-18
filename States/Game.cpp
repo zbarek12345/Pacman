@@ -20,7 +20,8 @@ TTF_Font* Game::_font = nullptr;
 DatabaseController* Game::_databaseController = nullptr;
 int Game::_fps = 100;
 bool Game::_render = true;
-pthread_t Game::_renderThread;
+SDL_bool Game::_running = SDL_TRUE;
+
 pthread_mutex_t stateLock = PTHREAD_MUTEX_INITIALIZER;
 Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_window = window;
@@ -37,39 +38,14 @@ Game::~Game() {
 	TTF_CloseFont(_font);
 }
 
-
-
-void* Game::Renderer(void* arg) {
-
-	int sleepNs = ceil(1e6/_fps);
-	uint64_t start = SDL_GetPerformanceCounter(), end;
-	timespec sleepTime = {0,0};
-	while (_render) {
-		pthread_mutex_lock(&stateLock);
-		SDL_RenderClear(_renderer);
-		_currentState->render();
-		SDL_RenderPresent(_renderer);
-		pthread_mutex_unlock(&stateLock);
-
-		end = SDL_GetPerformanceCounter();
-		sleepTime.tv_nsec = end - start;
-		if (sleepTime.tv_nsec < sleepNs) {
-			nanosleep(&sleepTime, nullptr);
-		}
-		start = SDL_GetPerformanceCounter();
-	}
-	return nullptr;
-}
-
 void Game::run() {
 	SDL_Event event;
-	SDL_bool running = SDL_TRUE;
 	uint32_t start = SDL_GetTicks();
 	//GameState::_next = nullptr;
-	while (running) {
+	while (_running) {
 		uint32_t delta = ceil(1e3/_fps);
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) running = SDL_FALSE;
+			if (event.type == SDL_QUIT) _running = SDL_FALSE;
 			//pthread_mutex_lock(&stateLock);
 			_currentState->handleInput(event, _currentState);
 			//pthread_mutex_unlock(&stateLock);
@@ -84,7 +60,4 @@ void Game::run() {
 		}
 		SDL_Delay(1);
 	}
-
-	_render = false;
-	pthread_join(_renderThread, nullptr);
 }
