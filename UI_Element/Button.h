@@ -29,7 +29,13 @@ public:
 
 	Button(SDL_Rect rect);
 
-	~Button() = default;
+	~Button() override = default;
+
+	// Copy constructor
+	Button(const Button& other);
+
+	// Copy assignment operator
+	Button& operator=(const Button& other);
 
 	void render(SDL_Renderer* renderer) override;
 

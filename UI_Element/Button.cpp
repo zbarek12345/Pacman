@@ -89,6 +89,98 @@ void Button::setText(std::string text) {
 	_text = text;
 }
 
+
+Button::Button(const Button& other) : UiElement(other),
+	_borderWidth(other._borderWidth),
+	_color(other._color),
+	_baseColor(other._baseColor),
+	_borderColor(other._borderColor),
+	_hoverColor(other._hoverColor),
+	_clickedColor(other._clickedColor),
+	_onClick(other._onClick),
+	_arg(other._arg),
+	_text(other._text),
+	_fontSize(other._fontSize),
+	_texture(nullptr),
+	_font(nullptr)
+{
+	// Copy font (share or recreate)
+	if (other._font) {
+		// Option 1: Share the font (safe, as SDL_ttf manages reference counting)
+		_font = other._font;
+		// Option 2: Recreate font (if you want a deep copy, requires font path)
+		// _font = TTF_OpenFont("path/to/font.ttf", _fontSize);
+		// if (!_font) { throw std::runtime_error("Failed to copy font: " + std::string(TTF_GetError())); }
+	}
+
+	// Copy texture (recreate from text if possible)
+	if (other._texture && _font && !_text.empty()) {
+		SDL_Surface* surface = TTF_RenderText_Solid(_font, _text.c_str(), _color);
+		if (surface) {
+			_texture = SDL_CreateTextureFromSurface(Game::_renderer, surface); // Assumes Game::_renderer exists
+			SDL_FreeSurface(surface);
+			if (!_texture) {
+				printf("Failed to copy texture: %s\n", SDL_GetError());
+			}
+		}
+	}
+}
+
+Button& Button::operator=(const Button& other) {
+	if (this == &other) {
+		return *this; // Handle self-assignment
+	}
+
+	// Clean up existing resources
+	if (_texture) {
+		SDL_DestroyTexture(_texture);
+		_texture = nullptr;
+	}
+	if (_font && _font != other._font) {
+		// Only close if not sharing the same font
+		TTF_CloseFont(_font);
+		_font = nullptr;
+	}
+
+	// Copy base class
+	UiElement::operator=(other);
+
+	// Copy members
+	_borderWidth = other._borderWidth;
+	_color = other._color;
+	_baseColor = other._baseColor;
+	_borderColor = other._borderColor;
+	_hoverColor = other._hoverColor;
+	_clickedColor = other._clickedColor;
+	_onClick = other._onClick;
+	_arg = other._arg;
+	_text = other._text;
+	_fontSize = other._fontSize;
+
+	// Copy font
+	if (other._font) {
+		// Option 1: Share the font
+		_font = other._font;
+		// Option 2: Recreate font (requires font path)
+		// _font = TTF_OpenFont("path/to/font.ttf", _fontSize);
+		// if (!_font) { throw std::runtime_error("Failed to copy font: " + std::string(TTF_GetError())); }
+	}
+
+	// Copy texture
+	if (other._texture && _font && !_text.empty()) {
+		SDL_Surface* surface = TTF_RenderText_Solid(_font, _text.c_str(), _color);
+		if (surface) {
+			_texture = SDL_CreateTextureFromSurface(Game::_renderer, surface);
+			SDL_FreeSurface(surface);
+			if (!_texture) {
+				printf("Failed to copy texture: %s\n", SDL_GetError());
+			}
+		}
+	}
+
+	return *this;
+}
+
 bool operator!=(const SDL_Color & lhs, const SDL_Color & rhs) {
 	return lhs.r != rhs.r || lhs.g != rhs.g || lhs.b != rhs.b;
 }

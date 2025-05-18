@@ -4,17 +4,18 @@
 
 #ifndef PLAYSTATE_H
 #define PLAYSTATE_H
+#include <Button.h>
 #include <cstdint>
 #include <string>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_image.h>
 #include "GameState.h"
+#include "Label.h"
 #include "Panel.h"
 #include "UiElement.h"
 
 
 class PlayState :public GameState{
-
 
 public:
 	class GameElement : public UiElement {
@@ -95,6 +96,9 @@ public:
 
 	StopMenu* _stopMenu;
 	GameElement* _game;
+	Label* _scoreLabel;
+	Label* _timeLabel;
+	Label* _livesLabel;
 public:
 	explicit PlayState(int32_t level);
 

@@ -33,6 +33,8 @@ add_executable(pacman
         UI_Element/Label.h
         UI_Element/Panel.cpp
         UI_Element/Panel.h
+        States/GameOverState.cpp
+        States/GameWonState.cpp
 )
 
 add_compile_options(--static -03 -march=x86_64 -mavx2 -funroll-loops)

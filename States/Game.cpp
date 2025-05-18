@@ -6,6 +6,7 @@
 
 #include <MenuState.h>
 
+#include "GameOverState.h"
 #include "LevelSelectState.h"
 #include "PlayState.h"
 #include "TestState.cpp"

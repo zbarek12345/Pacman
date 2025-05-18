@@ -15,6 +15,8 @@
 #include <cstdio>
 #include <MenuState.h>
 
+#include "GameOverState.h"
+#include "GameWonState.h"
 #include "Label.h"
 
 PlayState::GameElement::GameElement(int level) : UiElement() {
@@ -58,6 +60,7 @@ PlayState::GameElement::GameElement(int level) : UiElement() {
 	_score = 0;
 	_startTime = SDL_GetTicks();
 	_gameState = Running;
+	_lives = 3;
 }
 
 PlayState::GameElement::GameElement(SDL_Rect rect, int level):UiElement(rect){
@@ -88,6 +91,7 @@ PlayState::GameElement::GameElement(SDL_Rect rect, int level):UiElement(rect){
 	_score = 0;
 	_startTime = SDL_GetTicks();
 	_gameState = Running;
+	_lives = 3;
 }
 
 PlayState::GameElement::~GameElement() {
@@ -129,7 +133,6 @@ void PlayState::GameElement::render(SDL_Renderer *renderer) {
 	SDL_SetRenderDrawColor(renderer, 120,23,45,255);
 	SDL_RenderDrawRect(renderer, &_coordinates);
 }
-
 
 void PlayState::GameElement::update() {
 	uint64_t delta = SDL_GetPerformanceCounter() - previousTime;
@@ -290,6 +293,30 @@ PlayState::PlayState(int32_t level): GameState(Game::_renderer) {
 	_next = nullptr;
 	this->_game->_gameState = GameElement::Running;
 	_stopMenu = new StopMenu(this);
+
+	_timeLabel = new Label();
+	_timeLabel->setCoordinatesf(0.05, 0.05, 0.2, 0.05);
+	_timeLabel->setText("Time: ");
+	_timeLabel->setFont(Game::_font);
+	_timeLabel->setTextColor({186, 168, 2});
+	_timeLabel->setTextAlign(Label::LEFT);
+	_timeLabel->setTextSize(20);
+
+	_scoreLabel = new Label();
+	_scoreLabel->setCoordinatesf(0.05, 0.1, 0.2, 0.05);
+	_scoreLabel->setText("Score: ");
+	_scoreLabel->setFont(Game::_font);
+	_scoreLabel->setTextColor({186, 168, 2});
+	_scoreLabel->setTextAlign(Label::LEFT);
+	_scoreLabel->setTextSize(20);
+
+	_livesLabel = new Label();
+	_livesLabel->setCoordinatesf(0.05, 0.15, 0.2, 0.05);
+	_livesLabel->setText("Lives: ");
+	_livesLabel->setFont(Game::_font);
+	_livesLabel->setTextColor({186, 168, 2});
+	_livesLabel->setTextAlign(Label::LEFT);
+	_livesLabel->setTextSize(20);
 }
 
 PlayState::~PlayState() {
@@ -298,12 +325,26 @@ PlayState::~PlayState() {
 }
 
 void PlayState::update() {
+	_scoreLabel->setText("Score : " + std::to_string(_game->_score));
+	int32_t ts = (SDL_GetTicks() - _game->_startTime)/1e3;
+	_timeLabel->setText("Time : " + std::to_string(int32_t(ts/60)) + ":" + std::to_string((ts%60)));
+	_livesLabel->setText("Lives : " + std::to_string(_game->_lives));
 	_game->update();
+
+	if (_game->_map->getCollectibleCount()==0)
+		_next = new GameWonState(Game::_renderer, _game->_level);
+	else if (_game->_lives == 0)
+		_next = new GameOverState(Game::_renderer, _game->_level);
 }
 
 void PlayState::render() {
 	SDL_RenderClear(Game::_renderer);
+
 	_game->render(Game::_renderer);
+	_scoreLabel->render(Game::_renderer);
+	_timeLabel->render(Game::_renderer);
+	_livesLabel->render(Game::_renderer);
+
 	if (_game->_gameState == GameElement::Paused) {
 		_stopMenu->render(Game::_renderer);
 	}
