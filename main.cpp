@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <stdexcept>
 #include <MenuState.h>
 
 #include "States/Game.h"
@@ -83,37 +84,39 @@ void renderSubTextures(SDL_Renderer* renderer, SDL_Texture* texture) {
 }
 
 int main(int argc, char* argv[]) {
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
+    try {
+        SDL_Window* window = nullptr;
+        SDL_Renderer* renderer = nullptr;
 
-    if (!initSDL(&window, &renderer)) {
-        return -1;
-    }
+        if (!initSDL(&window, &renderer)) {
+            return -1;
+        }
+        printf("Window Loaded\n");
 
-    // Initialize SDL_image
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
-        std::cerr << "Failed to initialize SDL_image: " << IMG_GetError() << std::endl;
-        return -1;
-    }
+        // Initialize SDL_image
+        if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+            std::cerr << "Failed to initialize SDL_image: " << IMG_GetError() << std::endl;
+        }
+        printf("Image Loaded\n");
 
-    if (!TTF_Init()) {
-        std::cerr << "Failed to initialize SDL_ttf: " << TTF_GetError() << std::endl;
-    }
+        if (TTF_Init()==-1) {
+            std::cerr << "Failed to initialize SDL_ttf: " << TTF_GetError() << std::endl;
+        }
+        printf("Font Loaded\n");
 
-    // Load the 32x32 tileset texture
-    SDL_Texture* texture = loadTexture("../Textures/wallTiles.png", renderer);
-    if (!texture) {
+        Game game = Game(window, renderer);
+        Game::run();
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        IMG_Quit();
         SDL_Quit();
+
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
         return -1;
     }
-
-    // auto tileRender = new TileRender();
-    // std::string fileName = "../Levels/Lvl3";
-    // tileRender->readMap(fileName);
-    // tileRender->LoadTexture(renderer, "../Textures/wallTiles_white.png");
-
-    Game game = Game(window, renderer);
-    Game::run();
     // bool running = true;
     // SDL_Event event;
     // while (running) {
@@ -135,12 +138,7 @@ int main(int argc, char* argv[]) {
 
     //delete tileRender;
     // Cleanup
-    //TTF_CloseFont(font);
-    SDL_DestroyTexture(texture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    IMG_Quit();
-    SDL_Quit();
+
 
     return 0;
 }

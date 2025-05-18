@@ -12,7 +12,7 @@
 
 Game::GameStates Game::_state = Game::MENU;  // Initialize to MENU or any other default state
 GameState* Game::_currentState = nullptr;   // Initialize to nullptr
-int Game::_speed = 5;// Default value for _speed
+int Game::_speed = 5 * 1e9/SDL_GetPerformanceFrequency();// Default value for _speed
 int Game::_volume = 0;                      // Default value for _volume
 SDL_Window* Game::_window = nullptr;        // Initialize to nullptr
 SDL_Renderer* Game::_renderer = nullptr;

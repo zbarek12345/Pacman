@@ -35,7 +35,7 @@ add_executable(pacman
         UI_Element/Panel.h
 )
 
-add_compile_options(--static -03 -march=native)
+add_compile_options(--static -03 -march=x86_64 -mavx2 -funroll-loops)
 
 # Include SDL2 and SDL2_image directories for this target
 target_include_directories(pacman PRIVATE

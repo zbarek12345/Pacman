@@ -18,8 +18,6 @@ class PlayState :public GameState{
 
 public:
 	class GameElement : public UiElement {
-
-
 	public:
 
 		enum inGameState {
@@ -36,12 +34,12 @@ public:
 		void calculateMap();
 		void restart();
 		void restartPostions();
-		void stopUpdate();
 
 		struct Coordinates {
 			double x;
 			double y;
 		};
+
 		enum direction {
 			Up,
 			Down,
@@ -66,6 +64,9 @@ public:
 		int _score;
 		int _lives;
 		int _level;
+		int _globalEntityState;
+		uint32_t _globalEntityStateTime;
+
 		SDL_Texture* _mapTexture;
 
 		Map* _map;
@@ -123,7 +124,7 @@ private:
 	GameElement* _gameElement;
 	SDL_Texture* _texture;
 	bool _released = false;
-	uint32_t _releaseTime;
+	uint32_t _releaseTime; uint32_t _terrifiedTime;
 	pthread_t _ghostThread;
 	bool _thread;
 
@@ -148,6 +149,9 @@ public:
 	explicit Entity(GameElement* gameElement, Coordinates spawn, ghostType ghost);
 	~Entity();
 	void render(SDL_Renderer* renderer);
+
+	void resetPosition();
+
 	void updatePosition(uint64_t deltaNanos);
 	Coordinates getPosition();
 	void setTexture(SDL_Texture* texture);
@@ -173,6 +177,7 @@ class PlayState::GameElement::Map {
 	Cell** _map;
 	Coordinates _playerRespawn{};
 	Coordinates _ghostRespawn{};
+	uint16_t _collectibleCount;
 public:
 	Map();
 	~Map();
@@ -180,11 +185,13 @@ public:
 	void readMapString(std::string map);
 
 	bool isWall(int x, int y);
-
-	bool eat(int x, int y);
-
 	bool isPoint(int x, int y);
 	bool isPellet(int x, int y);
+
+	uint16_t getCollectibleCount();
+
+	void removeCollectible(int x, int y);
+
 	Coordinates getPlayerRespawn();
 	Coordinates getGhostRespawn();
 };
@@ -207,6 +214,8 @@ public:
 	direction getDirection();
 	void render(SDL_Renderer* renderer);
 	void updatePosition(uint64_t deltaNanos);
+	void resetPosition();
+	bool isDead();
 	~Player();
 
 	Coordinates getPosition();
