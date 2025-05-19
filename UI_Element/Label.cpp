@@ -54,6 +54,7 @@ void Label::render(SDL_Renderer *renderer) {
 	}
 
 	SDL_RenderCopy(renderer, texture, nullptr, &dst);
+	SDL_DestroyTexture(texture);
 }
 
 void Label::update() {

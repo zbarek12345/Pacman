@@ -47,6 +47,10 @@ MenuState::~MenuState() {
 
 void MenuState::update(){}            // Update logic (e.g., animations)
 void MenuState::render() {
+	if (_next != nullptr) {
+		_next->render();
+		return;
+	}
 	for (auto& e: _children) {
 		e->render(_renderer);
 	}

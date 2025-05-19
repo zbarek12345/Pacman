@@ -340,6 +340,10 @@ void PlayState::update() {
 }
 
 void PlayState::render() {
+	if (_next != nullptr) {
+		_next->render();
+		return;
+	}
 	SDL_RenderClear(Game::_renderer);
 
 	_game->render(Game::_renderer);
