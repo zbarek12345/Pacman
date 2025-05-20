@@ -19,3 +19,13 @@ cd Pacman
 mkdir build && cd build
 cmake .. && make
 ./pacman
+```
+
+## Development Status
+ - ⚠️ Note: The game is under active development.
+
+ - There may be bugs and glitches that will be fixed in future updates
+
+ - Current version is memory safe
+
+ - Audio features are coming soon
