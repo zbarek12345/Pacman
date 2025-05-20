@@ -537,6 +537,9 @@ SDL2_image_IS_TOP_LEVEL:STATIC=OFF
 //Value Computed by CMake
 SDL2_image_SOURCE_DIR:STATIC=C:/Users/Wiktor/CLionProjects/pacman/src/SDL2_image-2.8.8
 
+//The directory containing a CMake configuration file for SDL2_mixer.
+SDL2_mixer_DIR:PATH=C:/msys64/mingw64/lib/cmake/SDL2_mixer
+
 //Value Computed by CMake
 SDL2_ttf_BINARY_DIR:STATIC=C:/Users/Wiktor/CLionProjects/pacman/cmake-build-debug/src/SDL2_ttf-2.24.0
 

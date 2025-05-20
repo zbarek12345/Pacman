@@ -469,7 +469,7 @@ void* PlayState::GameElement::Entity::ghostThread(void* arg){
 		if(entity->_gameElement->_gameState == Running)
 			entity->updatePosition(delta);
 		previous = SDL_GetPerformanceCounter();
-		SDL_Delay(15);
+		SDL_Delay(20);
 	}
 	return nullptr;
 }
@@ -672,25 +672,25 @@ void PlayState::GameElement::Entity::updatePosition(uint64_t deltaNanos) {
 	case Up:
 		targetY -= speed;
 		if (ceil(targetY) != _previous.y) {
-			targetY = ceil(targetY);
+			targetY = _previous.y-1;
 		}
 		break;
 	case Down:
 		targetY += speed;
 		if (floor(targetY) != _previous.y) {
-			targetY = floor(targetY);
+			targetY = _previous.y+1;
 		}
 		break;
 	case Left:
 		targetX -= speed;
 		if (ceil(targetX) != _previous.x) {
-			targetX = ceil(targetX);
+			targetX = _previous.x-1;
 		}
 		break;
 	case Right:
 		targetX += speed;
 		if (floor(targetX) != _previous.x) {
-			targetX = floor(targetX);
+			targetX = _previous.x+1;
 		}
 		break;
 	}
@@ -698,25 +698,22 @@ void PlayState::GameElement::Entity::updatePosition(uint64_t deltaNanos) {
 	_position.x = targetX;
 	_position.y = targetY;
 
-	if (_state == Dead && sqrt(pow(_position.x - _gameElement->_map->getGhostRespawn().x, 2) + pow(_position.y- _gameElement->_map->getGhostRespawn().y, 2)) <= 2) {
-		_position = {_spawn.x, _spawn.y+2};
-		_released = false;
-		_state = (state) _gameElement->_globalEntityState;
-	}
-
-	if (_state == Dead && SDL_GetTicks()>_releaseTime && _released) {
-		_state = (state) _gameElement->_globalEntityState;
+	if (_state == Dead && fabs(_position.x - _gameElement->_map->getGhostRespawn().x)<4 && fabs(_position.y - (_gameElement->_map->getGhostRespawn().y+1.5))<3.5) {
+		_state =(state) _gameElement->_globalEntityState;
 		_position = _gameElement->_map->getGhostRespawn();
+		_position.y++;
 	}
 
 	if (!_released && SDL_GetTicks()>_releaseTime) {
+		_state = (state) _gameElement->_globalEntityState;
 		_released = true;
 		_position = _gameElement->_map->getGhostRespawn();
 		_position.y--;
 	}
 
-	if (targetX == round(targetX) && targetY == round(targetY)) {
-		updateDirection(targetX, targetY);
+
+	if (_position.x == round(_position.x) && _position.y == round(_position.y)) {
+		updateDirection(_position.x, _position.y);
 		_previous = _position;
 	}
 }
@@ -786,6 +783,7 @@ PlayState::GameElement::Entity::state PlayState::GameElement::Entity::getState()
 void PlayState::GameElement::Entity::getEaten() {
 	_state = Dead;
 	_releaseTime = SDL_GetTicks() + 5e3;
+	_released = false;
 }
 
 void PlayState::GameElement::Entity::setState(state state) {
@@ -799,6 +797,20 @@ void PlayState::GameElement::Entity::setState(state state) {
 		else {
 			_state = state;
 			_terrifiedTime = SDL_GetTicks() + (uint32_t)1e4;
+			switch (_direction) {
+				case Up:
+					_previous = {round(_position.x),round(_position.y)-1};
+				break;
+				case Down:
+					_previous = {round(_position.x),round(_position.y)+1};
+				break;
+				case Left:
+					_previous = {round(_position.x)-1,round(_position.y)};
+				break;
+				case Right:
+					_previous = {round(_position.x)+1,round(_position.y)};
+				break;
+			}
 			_direction = (direction)( _direction %2 == 0 ? _direction+1: _direction-1);
 		}
 	}
@@ -807,6 +819,20 @@ void PlayState::GameElement::Entity::setState(state state) {
 	}
 	else {
 		_state = state;
+		switch (_direction) {
+			case Up:
+				_previous = {round(_position.x),round(_position.y)-1};
+			break;
+			case Down:
+				_previous = {round(_position.x),round(_position.y)+1};
+			break;
+			case Left:
+				_previous = {round(_position.x)-1,round(_position.y)};
+			break;
+			case Right:
+				_previous = {round(_position.x)+1,round(_position.y)};
+			break;
+		}
 		_direction = (direction)( _direction %2 == 0 ? _direction+1: _direction-1);
 	}
 }

@@ -48,7 +48,7 @@ void Label::render(SDL_Renderer *renderer) {
 				dst.x += std::max(_coordinates.w - textureWidth, 5);
 				break;
 			case CENTER:
-				dst.x += (_coordinates.w - textureWidth)/2.0;
+				dst.x += (_coordinates.w -  textureWidth)/2.0;
 				break;
 		}
 	}

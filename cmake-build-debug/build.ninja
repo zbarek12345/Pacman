@@ -52,121 +52,128 @@ build cmake_object_order_depends_target_pacman: phony || .
 build CMakeFiles/pacman.dir/main.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/main.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\main.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir
 
 build CMakeFiles/pacman.dir/TileRender.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/TileRender.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\TileRender.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir
 
 build CMakeFiles/pacman.dir/States/Game.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/Game.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\Game.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/States/MenuState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/MenuState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\MenuState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/UI_Element/Button.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/UI_Element/Button.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\UI_Element\Button.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
 build CMakeFiles/pacman.dir/UI_Element/Image.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/UI_Element/Image.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\UI_Element\Image.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
 build CMakeFiles/pacman.dir/UI_Element/ScrollableList.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/UI_Element/ScrollableList.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\UI_Element\ScrollableList.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
 build CMakeFiles/pacman.dir/States/TestState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/TestState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\TestState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/States/LevelSelectState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/LevelSelectState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\LevelSelectState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/UI_Element/Slider.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\UI_Element\Slider.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
 build CMakeFiles/pacman.dir/Database/DatabaseController.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/Database/DatabaseController.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\Database\DatabaseController.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\Database
 
 build CMakeFiles/pacman.dir/States/PlayState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/PlayState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\PlayState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/States/GameState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/GameState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\GameState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/UI_Element/Label.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/UI_Element/Label.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\UI_Element\Label.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
 build CMakeFiles/pacman.dir/UI_Element/Panel.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/UI_Element/Panel.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\UI_Element\Panel.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\UI_Element
 
 build CMakeFiles/pacman.dir/States/GameOverState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/GameOverState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\GameOverState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
 
 build CMakeFiles/pacman.dir/States/GameWonState.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/States/GameWonState.cpp || cmake_object_order_depends_target_pacman
   DEP_FILE = CMakeFiles\pacman.dir\States\GameWonState.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -isystem C:/msys64/mingw64/include/SDL2
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
   OBJECT_DIR = CMakeFiles\pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\pacman.dir\States
+
+build CMakeFiles/pacman.dir/Audio/AudioHandler.cpp.obj: CXX_COMPILER__pacman_unscanned_Debug C$:/Users/Wiktor/CLionProjects/pacman/Audio/AudioHandler.cpp || cmake_object_order_depends_target_pacman
+  DEP_FILE = CMakeFiles\pacman.dir\Audio\AudioHandler.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/Wiktor/CLionProjects/pacman/States -IC:/Users/Wiktor/CLionProjects/pacman/UI_Element -IC:/Users/Wiktor/CLionProjects/pacman/Database -IC:/Users/Wiktor/CLionProjects/pacman/Audio -isystem C:/msys64/mingw64/include/SDL2
+  OBJECT_DIR = CMakeFiles\pacman.dir
+  OBJECT_FILE_DIR = CMakeFiles\pacman.dir\Audio
 
 
 # =============================================================================
@@ -176,9 +183,9 @@ build CMakeFiles/pacman.dir/States/GameWonState.cpp.obj: CXX_COMPILER__pacman_un
 #############################################
 # Link the executable pacman.exe
 
-build pacman.exe: CXX_EXECUTABLE_LINKER__pacman_Debug CMakeFiles/pacman.dir/main.cpp.obj CMakeFiles/pacman.dir/TileRender.cpp.obj CMakeFiles/pacman.dir/States/Game.cpp.obj CMakeFiles/pacman.dir/States/MenuState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Button.cpp.obj CMakeFiles/pacman.dir/UI_Element/Image.cpp.obj CMakeFiles/pacman.dir/UI_Element/ScrollableList.cpp.obj CMakeFiles/pacman.dir/States/TestState.cpp.obj CMakeFiles/pacman.dir/States/LevelSelectState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj CMakeFiles/pacman.dir/Database/DatabaseController.cpp.obj CMakeFiles/pacman.dir/States/PlayState.cpp.obj CMakeFiles/pacman.dir/States/GameState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Label.cpp.obj CMakeFiles/pacman.dir/UI_Element/Panel.cpp.obj CMakeFiles/pacman.dir/States/GameOverState.cpp.obj CMakeFiles/pacman.dir/States/GameWonState.cpp.obj | C$:/msys64/mingw64/lib/libSDL2main.a C$:/msys64/mingw64/lib/libSDL2.dll.a C$:/msys64/mingw64/lib/libSDL2_ttf.dll.a C$:/msys64/mingw64/lib/libSDL2_image.dll.a C$:/msys64/mingw64/lib/libsqlite3.dll.a
+build pacman.exe: CXX_EXECUTABLE_LINKER__pacman_Debug CMakeFiles/pacman.dir/main.cpp.obj CMakeFiles/pacman.dir/TileRender.cpp.obj CMakeFiles/pacman.dir/States/Game.cpp.obj CMakeFiles/pacman.dir/States/MenuState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Button.cpp.obj CMakeFiles/pacman.dir/UI_Element/Image.cpp.obj CMakeFiles/pacman.dir/UI_Element/ScrollableList.cpp.obj CMakeFiles/pacman.dir/States/TestState.cpp.obj CMakeFiles/pacman.dir/States/LevelSelectState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Slider.cpp.obj CMakeFiles/pacman.dir/Database/DatabaseController.cpp.obj CMakeFiles/pacman.dir/States/PlayState.cpp.obj CMakeFiles/pacman.dir/States/GameState.cpp.obj CMakeFiles/pacman.dir/UI_Element/Label.cpp.obj CMakeFiles/pacman.dir/UI_Element/Panel.cpp.obj CMakeFiles/pacman.dir/States/GameOverState.cpp.obj CMakeFiles/pacman.dir/States/GameWonState.cpp.obj CMakeFiles/pacman.dir/Audio/AudioHandler.cpp.obj | C$:/msys64/mingw64/lib/libSDL2main.a C$:/msys64/mingw64/lib/libSDL2.dll.a C$:/msys64/mingw64/lib/libSDL2_ttf.dll.a C$:/msys64/mingw64/lib/libSDL2_image.dll.a C$:/msys64/mingw64/lib/libSDL2_mixer.dll.a C$:/msys64/mingw64/lib/libsqlite3.dll.a
   FLAGS = -g
-  LINK_LIBRARIES = C:/msys64/mingw64/lib/libSDL2main.a  C:/msys64/mingw64/lib/libSDL2.dll.a  C:/msys64/mingw64/lib/libSDL2_ttf.dll.a  C:/msys64/mingw64/lib/libSDL2_image.dll.a  C:/msys64/mingw64/lib/libsqlite3.dll.a  -lshell32  -Wl,--undefined=WinMain  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = C:/msys64/mingw64/lib/libSDL2main.a  C:/msys64/mingw64/lib/libSDL2.dll.a  C:/msys64/mingw64/lib/libSDL2_ttf.dll.a  C:/msys64/mingw64/lib/libSDL2_image.dll.a  C:/msys64/mingw64/lib/libSDL2_mixer.dll.a  C:/msys64/mingw64/lib/libsqlite3.dll.a  -lshell32  -Wl,--undefined=WinMain  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\pacman.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -255,14 +262,14 @@ build all: phony pacman.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FeatureSummary.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPkgConfig.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindSQLite3.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Wiktor/CLionProjects/pacman/CMakeLists.txt C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Config.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/sdlfind.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FeatureSummary.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPkgConfig.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindSQLite3.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Wiktor/CLionProjects/pacman/CMakeLists.txt C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Config.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/sdlfind.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config.cmake C$:/msys64/mingw64/lib/cmake/SDL2_mixer/sdl2_mixer-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_mixer/sdl2_mixer-config.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FeatureSummary.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPkgConfig.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindSQLite3.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Wiktor/CLionProjects/pacman/CMakeLists.txt C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Config.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/sdlfind.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake: phony
+build C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FeatureSummary.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPkgConfig.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/FindSQLite3.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.3/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Wiktor/CLionProjects/pacman/CMakeLists.txt C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Config.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2Targets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2mainTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2staticTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets-release.cmake C$:/msys64/mingw64/lib/cmake/SDL2/SDL2testTargets.cmake C$:/msys64/mingw64/lib/cmake/SDL2/sdlfind.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_image/sdl2_image-config.cmake C$:/msys64/mingw64/lib/cmake/SDL2_mixer/sdl2_mixer-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_mixer/sdl2_mixer-config.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config-version.cmake C$:/msys64/mingw64/lib/cmake/SDL2_ttf/sdl2_ttf-config.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake: phony
 
 
 #############################################
