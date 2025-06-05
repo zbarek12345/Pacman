@@ -37,6 +37,9 @@ MenuState::MenuState(SDL_Renderer *renderer) : GameState(renderer) {
 	_children.push_back(img);
 	_children.push_back(Play);
 	_children.push_back(Exit);
+
+	Game::_audioHandler->stopAllSounds();
+	Game::_audioHandler->playSound(AudioHandler::INTRO);
 }
 
 MenuState::~MenuState() {

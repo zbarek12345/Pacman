@@ -28,7 +28,7 @@ public:
     ~AudioHandler();
 
     // Load a sound file and associate it with a sound type
-    void loadSound(Sounds type, const char* path, bool loop);
+    void loadSound(Sounds type, const char* path, int32_t loopCount);
 
     // Trigger a sound to play (called by game logic)
     void playSound(Sounds type);
@@ -44,12 +44,12 @@ private:
     struct SoundEvent {
         Sounds type;             // Which sound (e.g., WAKA_WAKA)
         bool isPlaying;          // Is the sound currently playing?
-        bool loop;               // Should the sound loop? (e.g., GHOST_SIREN)
+        int32_t loopCount;               // Should the sound loop? (e.g., GHOST_SIREN)
         int channel;             // Mixer channel assigned (-1 if not playing)
         Mix_Chunk* chunk;        // Sound data (WAV)
 
-        SoundEvent(Sounds t, Mix_Chunk* c, bool l)
-            : type(t), isPlaying(false), loop(l), channel(-1), chunk(c) {}
+        SoundEvent(Sounds t, Mix_Chunk* c, int32_t l)
+            : type(t), isPlaying(false), loopCount(l), channel(-1), chunk(c) {}
     };
 
     // Global variables with _{name} convention

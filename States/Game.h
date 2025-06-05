@@ -4,6 +4,7 @@
 
 #ifndef GAME_H
 #define GAME_H
+#include <AudioHandler.h>
 #include <GameState.h>
 #include <SDL_ttf.h>
 #include <DatabaseController.h>
@@ -31,6 +32,7 @@ public:
 	static bool _render;
 	static pthread_t _renderThread;
 	static SDL_bool _running;
+	static AudioHandler* _audioHandler;
 	Game(SDL_Window* window, SDL_Renderer* renderer);
 
 	static void* Renderer(void* arg);

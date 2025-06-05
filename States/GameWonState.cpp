@@ -12,7 +12,34 @@
 #include "Panel.h"
 #include "PlayState.h"
 
-GameWonState::GameWonState(SDL_Renderer* renderer, int32_t level) : GameState(renderer) {
+GameWonState::HighScore::HighScore(): UiElement(){
+	_updatetime = SDL_GetTicks();
+	_text = new Label();
+	_text->setCoordinatesf(0.3,0.3,0.2,0.2);
+	_text->setFont(Game::_font);
+	_text->setTextSize(50);
+	_text->setText("New High Score");
+	_text->setTextColor({232, 0, 0});
+	_text->setTextAlign(Label::CENTER);
+	printf("High Score Initialized");
+}
+
+GameWonState::HighScore::~HighScore() {
+	delete _text;
+}
+
+
+void GameWonState::HighScore::render(SDL_Renderer* renderer) {
+	if (SDL_GetTicks() > _updatetime) {
+		//render
+	}
+}
+
+void GameWonState::HighScore::handleInput(SDL_Event &event) {}
+
+void GameWonState::HighScore::update() {}
+
+GameWonState::GameWonState(SDL_Renderer* renderer, int32_t level, float bestTime, int bestScore) : GameState(renderer) {
 	_renderer = renderer;
 	_level = level;
 
@@ -20,6 +47,14 @@ GameWonState::GameWonState(SDL_Renderer* renderer, int32_t level) : GameState(re
 	Label* name = new Label();
 	Button* rerunLevelButton = new Button(), *levelSelectButton = new Button(), *mainMenuButton = new Button();
 	SDL_Color normal = {137, 209, 54}, hover = {111, 191, 19}, pressed = {74, 138, 0};
+
+	auto stats = Game::_databaseController->getLevel(level);
+	if (stats.best_score < bestScore || stats.best_time > bestTime) {
+		hs = new HighScore();
+		stats.best_score = std::max(bestScore, stats.best_score);
+		stats.best_time = std::fminf(bestTime, stats.best_time);
+		Game::_databaseController->updateLevel(stats);
+	}
 
 	#pragma region Button Predefinition
 		rerunLevelButton->setFont(Game::_font);
@@ -75,6 +110,8 @@ GameWonState::GameWonState(SDL_Renderer* renderer, int32_t level) : GameState(re
 	panel->addChild(levelSelectButton);
 	panel->addChild(mainMenuButton);
 	_children.push_back(panel);
+	Game::_audioHandler->stopAllSounds();
+	Game::_audioHandler->playSound(AudioHandler::CUTSCENE);
 }
 
 GameWonState::~GameWonState() {
@@ -90,6 +127,14 @@ void GameWonState::rerunLevel(void *arg) {
 }
 
 void GameWonState::update() {
+	if (hs!=nullptr) {
+		if (hs->_updatetime + 1e3 < SDL_GetTicks()) {
+			delete hs;
+			hs = nullptr;
+		}
+	}
+
+
 	for (auto& e : _children) {
 		e->update();
 	}
@@ -98,6 +143,10 @@ void GameWonState::update() {
 void GameWonState::render() {
 	for (auto& e : _children) {
 		e->render(_renderer);
+	}
+
+	if (hs!=nullptr) {
+		hs->render(_renderer);
 	}
 }
 

@@ -22,6 +22,7 @@ DatabaseController* Game::_databaseController = nullptr;
 int Game::_fps = 100;
 bool Game::_render = true;
 SDL_bool Game::_running = SDL_TRUE;
+AudioHandler* Game::_audioHandler = nullptr;
 
 pthread_mutex_t stateLock = PTHREAD_MUTEX_INITIALIZER;
 Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
@@ -29,9 +30,16 @@ Game::Game(SDL_Window *window, SDL_Renderer *renderer) {
 	_renderer = renderer;
 	_font = TTF_OpenFont("../Fonts/varsity_regular.ttf", 25);
 	_databaseController = new DatabaseController("../Database/database.sqlite");
+	_audioHandler = new AudioHandler();
+	_audioHandler->loadSound(AudioHandler::INTRO, "../Audio/pacman_beginning.wav", -1);
+	_audioHandler->loadSound(AudioHandler::CUTSCENE, "../Audio/intermission.wav", -1);
+	_audioHandler->loadSound(AudioHandler::POWER_UP, "../Audio/fright.wav", 6);
+	//_audioHandler->loadSound(AudioHandler::WAKA_WAKA, "../Audio/pacman_chomp.wav", 0);
+	_audioHandler->loadSound(AudioHandler::GHOST_EATEN, "../Audio/eat_ghost.wav", 2);
+	_audioHandler->loadSound(AudioHandler::GHOST_RETURN, "../Audio/eyes.wav", 5);
+	_audioHandler->loadSound(AudioHandler::GHOST_SIREN, "../Audio/siren0.wav", 3);
+	_audioHandler->loadSound(AudioHandler::PAC_MAN_DEATH, "../Audio/death_0.wav", 0);
 	_currentState = new MenuState(_renderer);
-	//pthread_mutex_init(&stateLock, nullptr);
-	//pthread_create(&_renderThread, nullptr, Renderer, nullptr);
 }
 
 Game::~Game() {

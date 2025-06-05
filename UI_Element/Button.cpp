@@ -215,6 +215,7 @@ void Button::setFont(TTF_Font* font) {
 
 void Button::setColor(SDL_Color color) {
 	_baseColor = color;
+	_color = color;
 }
 
 void Button::setColor(uint8_t r, uint8_t g, uint8_t b) {

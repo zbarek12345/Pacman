@@ -53,7 +53,7 @@ AudioHandler::~AudioHandler() {
     SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 
-void AudioHandler::loadSound(Sounds type, const char* path, bool loop) {
+void AudioHandler::loadSound(Sounds type, const char* path, int32_t loop) {
     Mix_Chunk* chunk = Mix_LoadWAV(path);
     if (!chunk) {
         fprintf(stderr, "Failed to load sound %s: %s\n", path, Mix_GetError());
@@ -120,7 +120,7 @@ void* AudioHandler::audioThreadLoop(void* arg) {
                 }
 
                 // Play the sound
-                event.channel = Mix_PlayChannel(-1, event.chunk, event.loop ? -1 : 0);
+                event.channel = Mix_PlayChannel(-1, event.chunk, event.loopCount);
                 if (event.channel != -1) {
                     event.isPlaying = true;
                 }
@@ -140,7 +140,7 @@ void* AudioHandler::audioThreadLoop(void* arg) {
         pthread_mutex_unlock(&handler->_mutex);
 
         // Avoid busy-waiting
-        SDL_Delay(10);
+        SDL_Delay(30);
     }
 
     return NULL;

@@ -95,12 +95,12 @@ PlayState::GameElement::GameElement(SDL_Rect rect, int level):UiElement(rect){
 }
 
 PlayState::GameElement::~GameElement() {
-	delete _map;
-	delete _player;
-	SDL_DestroyTexture(_mapTexture);
 	for(int i =0;i<4;i++)
 	   delete _ghosts[i];
 	delete[] _ghosts;
+	delete _player;
+	delete _map;
+	SDL_DestroyTexture(_mapTexture);
 	SDL_DestroyTexture(_points);
 }
 
@@ -150,6 +150,8 @@ void PlayState::GameElement::update() {
 		_globalEntityState == 0
 			? _globalEntityStateTime = SDL_GetTicks() + (uint32_t) 1e4
 			: _globalEntityStateTime = SDL_GetTicks() + (uint32_t) 2e4;
+        if(_globalEntityState == 1)
+            Game::_audioHandler->playSound(AudioHandler::GHOST_SIREN);
 
 		for (int i =0;i<4;i++) {
 			_ghosts[i]->setState((Entity::state)_globalEntityState);
@@ -196,6 +198,8 @@ void PlayState::GameElement::restartPostions() {
 	_globalEntityStateTime = SDL_GetTicks() + (uint32_t) 1e4;
 	_player->resetPosition();
 	for (int i =0;i<4;i++) {
+		if (_globalEntityState == 1)
+			Game::_audioHandler->playSound(AudioHandler::GHOST_SIREN);
 		_ghosts[i]->setState((Entity::state)_globalEntityState);
 		_ghosts[i]->resetPosition();
 	}
@@ -208,10 +212,12 @@ void PlayState::GameElement::verifyCollision() {
 	if (_map->isPoint(round(playerCoord.x), round(playerCoord.y))) {
 		_score+=10;
 		_map->removeCollectible(round(playerCoord.x), round(playerCoord.y));
+		Game::_audioHandler->playSound(AudioHandler::WAKA_WAKA);
 	}
 	else if (_map->isPellet(round(playerCoord.x), round(playerCoord.y))) {
 		_score+=50;
 		_map->removeCollectible(round(playerCoord.x), round(playerCoord.y));
+		Game::_audioHandler->playSound(AudioHandler::POWER_UP);
 
 		#pragma loop(unroll(4))
 		for (int i =0;i<4;i++) {
@@ -229,6 +235,7 @@ void PlayState::GameElement::verifyCollision() {
 			else if ((ghoststate == Entity::Chasing||ghoststate == Entity::Normal)&& !_player->isDead()) {
 				_lives--;
 				_player->Kill();
+				Game::_audioHandler->playSound(AudioHandler::PAC_MAN_DEATH);
 			}
 		}
 	}
@@ -319,6 +326,7 @@ PlayState::PlayState(int32_t level): GameState(Game::_renderer) {
 	_livesLabel->setTextColor({186, 168, 2});
 	_livesLabel->setTextAlign(Label::LEFT);
 	_livesLabel->setTextSize(20);
+	Game::_audioHandler->stopAllSounds();
 }
 
 PlayState::~PlayState() {
@@ -333,10 +341,27 @@ void PlayState::update() {
 	_livesLabel->setText("Lives : " + std::to_string(_game->_lives));
 	_game->update();
 
-	if (_game->_map->getCollectibleCount()==0)
-		_next = new GameWonState(Game::_renderer, _game->_level);
-	else if (_game->_lives == 0)
-		_next = new GameOverState(Game::_renderer, _game->_level);
+	if (_game->_map->getCollectibleCount()==0) {
+		uint32_t seconds = floor((SDL_GetTicks() - _game->_startTime)/1e3);
+		uint8_t minutes = seconds/60;
+		seconds = seconds%60;
+		_next = new GameWonState(Game::_renderer, _game->_level,minutes + seconds*0.01, _game->_score);
+		SDL_Event event;
+		event.type = SDL_KEYDOWN;
+		event.key.keysym.sym = SDLK_ESCAPE;
+		SDL_PushEvent(&event);
+	}
+	else if (_game->_lives == 0 && !_game->_player->isDead()) {
+		uint32_t seconds = floor((SDL_GetTicks() - _game->_startTime)/1e3);
+		uint8_t minutes = seconds/60;
+		seconds = seconds%60;
+		_next = new GameOverState(Game::_renderer, _game->_level,minutes + seconds*0.01, _game->_score);
+		SDL_Event event;
+		event.type = SDL_KEYDOWN;
+		event.key.keysym.sym = SDLK_ESCAPE;
+		SDL_PushEvent(&event);
+	}
+
 }
 
 void PlayState::render() {
@@ -666,30 +691,48 @@ void PlayState::GameElement::Entity::updatePosition(uint64_t deltaNanos) {
 		_direction = (direction)( _direction %2 == 0 ? _direction+1: _direction-1);
 	}else if (_state == Terrified) {
 		speed/=5;
+	}else if (isWall(floor(_position.x), floor(_position.y))) {
+		speed/=2;
 	}
 
 	switch (_direction) {
 	case Up:
 		targetY -= speed;
+		if (targetY<0) {
+			targetY+=31;
+			_previous.y = 31;
+		}
 		if (ceil(targetY) != _previous.y) {
 			targetY = _previous.y-1;
 		}
 		break;
 	case Down:
 		targetY += speed;
+		if (targetY>31) {
+			targetY-=31;
+			_previous.y = 0;
+		}
 		if (floor(targetY) != _previous.y) {
 			targetY = _previous.y+1;
 		}
 		break;
 	case Left:
 		targetX -= speed;
+		if (targetX<0) {
+			targetX+=31;
+			_previous.x = 31;
+		}
 		if (ceil(targetX) != _previous.x) {
 			targetX = _previous.x-1;
 		}
 		break;
 	case Right:
 		targetX += speed;
-		if (floor(targetX) != _previous.x) {
+		if (targetX>31) {
+			targetX-=31;
+			_previous.x = 0;
+		}
+		else if (floor(targetX) != _previous.x) {
 			targetX = _previous.x+1;
 		}
 		break;
@@ -784,6 +827,7 @@ void PlayState::GameElement::Entity::getEaten() {
 	_state = Dead;
 	_releaseTime = SDL_GetTicks() + 5e3;
 	_released = false;
+	Game::_audioHandler->playSound(AudioHandler::GHOST_RETURN);
 }
 
 void PlayState::GameElement::Entity::setState(state state) {

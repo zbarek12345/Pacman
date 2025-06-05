@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <MenuState.h>
+#include <SDL_mixer.h>
 
 #include "States/Game.h"
 #include "TileRender.h"
@@ -13,7 +14,7 @@ const int TILE_SIZE = 8;
 const int TEXTURE_SIZE = 32;
 
 bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
@@ -32,7 +33,7 @@ bool initSDL(SDL_Window** window, SDL_Renderer** renderer) {
                                           SDL_WINDOWPOS_CENTERED,
                                          1440,
                                           1080,
-                                          SDL_WINDOW_SHOWN);
+                                          SDL_WINDOW_SHOWN| SDL_WINDOW_BORDERLESS | SDL_WINDOW_FULLSCREEN);
 
     if (!*window) {
         std::cerr << "Failed to create window: " << SDL_GetError() << std::endl;
@@ -87,7 +88,6 @@ int main(int argc, char* argv[]) {
     try {
         SDL_Window* window = nullptr;
         SDL_Renderer* renderer = nullptr;
-
         if (!initSDL(&window, &renderer)) {
             return -1;
         }
@@ -104,15 +104,29 @@ int main(int argc, char* argv[]) {
         }
         printf("Font Loaded\n");
 
+        int flags = MIX_INIT_FLAC | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MID | MIX_INIT_OPUS | MIX_INIT_WAVPACK;
+        int initted = Mix_Init(flags);
+        if ((initted & flags) != flags) {
+            printf("Mix_Init failed: %s\n", Mix_GetError());
+            printf("Supported formats: FLAC=%d, MOD=%d, MP3=%d, OGG=%d, MID=%d, OPUS=%d, WAVPACK=%d\n",
+                   (initted & MIX_INIT_FLAC) != 0,
+                   (initted & MIX_INIT_MOD) != 0,
+                   (initted & MIX_INIT_MP3) != 0,
+                   (initted & MIX_INIT_OGG) != 0,
+                   (initted & MIX_INIT_MID) != 0,
+                   (initted & MIX_INIT_OPUS) != 0,
+                   (initted & MIX_INIT_WAVPACK) != 0);
+        }
+
         auto game = new Game(window, renderer);
         Game::run();
         delete game;
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
+        Mix_Quit();
         TTF_Quit();
         IMG_Quit();
         SDL_Quit();
-
     }
     catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;

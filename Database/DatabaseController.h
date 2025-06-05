@@ -36,5 +36,7 @@ public:
 	/// @param level identifier of level
 	/// @return level descriptor object
 	level getLevel(int level);
+
+	void updateLevel(level stats);
 };
 #endif //DATABASECONTROLLER_H

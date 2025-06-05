@@ -12,7 +12,32 @@
 #include "Panel.h"
 #include "PlayState.h"
 
-GameOverState::GameOverState(SDL_Renderer *renderer, int level) : GameState(renderer){
+GameOverState::HighScore::HighScore(): UiElement(){
+	_updatetime = SDL_GetTicks();
+	_text = new Label();
+	_text->setCoordinatesf(0.3,0.3,0.2,0.2);
+	_text->setFont(Game::_font);
+	_text->setTextSize(50);
+	_text->setText("New High Score");
+	_text->setTextColor({232, 0, 0});
+	_text->setTextAlign(Label::CENTER);
+	//printf("High Score Initialized");
+}
+
+GameOverState::HighScore::~HighScore() {
+	delete _text;
+}
+
+
+void GameOverState::HighScore::render(SDL_Renderer* renderer) {
+	_text->render(renderer);
+}
+
+void GameOverState::HighScore::handleInput(SDL_Event &event) {}
+
+void GameOverState::HighScore::update() {}
+
+GameOverState::GameOverState(SDL_Renderer *renderer, int level, float time, int score) : GameState(renderer){
 	_renderer = renderer;
 	_level = level;
 
@@ -20,6 +45,15 @@ GameOverState::GameOverState(SDL_Renderer *renderer, int level) : GameState(rend
 	Label* name = new Label();
 	Button* rerunLevelButton = new Button(), *levelSelectButton = new Button(), *mainMenuButton = new Button();
 	SDL_Color normal = {137, 209, 54}, hover = {111, 191, 19}, pressed = {74, 138, 0};
+
+	auto stats = Game::_databaseController->getLevel(level);
+	if (stats.best_score < score) {
+		hs = new HighScore();
+		stats.best_score = score;
+		Game::_databaseController->updateLevel(stats);
+	}
+	else
+		hs = nullptr;
 
 	#pragma region Button Predefinition
 		rerunLevelButton->setFont(Game::_font);
@@ -46,6 +80,7 @@ GameOverState::GameOverState(SDL_Renderer *renderer, int level) : GameState(rend
 		mainMenuButton->setFontSize(50);
 		mainMenuButton->setBorderColor({0,0,0,255});
 	#pragma endregion
+
 	rerunLevelButton->setText("Try Again");
 	levelSelectButton->setText("Select Another Level");
 	mainMenuButton->setText("Main Menu");
@@ -75,6 +110,9 @@ GameOverState::GameOverState(SDL_Renderer *renderer, int level) : GameState(rend
 	panel->addChild(levelSelectButton);
 	panel->addChild(mainMenuButton);
 	_children.push_back(panel);
+	Game::_audioHandler->stopAllSounds();
+	Game::_audioHandler->playSound(AudioHandler::CUTSCENE);
+	//printf("Game Over Constructor");
 }
 
 GameOverState::~GameOverState() {
@@ -89,11 +127,22 @@ void GameOverState::rerunLevel(void *arg) {
 }
 
 void GameOverState::update() {
+	if (hs!=nullptr) {
+		if (hs->_updatetime + 1e4 < SDL_GetTicks()) {
+			//printf("High Score Deleted");
+			delete hs;
+			hs = nullptr;
+		}
+	}
 }
 
 void GameOverState::render() {
 	for (auto& e : _children) {
 		e->render(_renderer);
+	}
+
+	if (hs!=nullptr) {
+		hs->render(_renderer);
 	}
 }
 

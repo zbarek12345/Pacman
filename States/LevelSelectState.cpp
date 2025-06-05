@@ -7,6 +7,7 @@
 #include <SDL_image.h>
 
 #include "Image.h"
+#include "MenuState.h"
 #include "PlayState.h"
 #include "../TileRender.h"
 
@@ -72,6 +73,10 @@ LevelSelectState::LevelSelectState(SDL_Renderer* renderer):GameState(renderer) {
 	_rightButton->onClick(inc_iterator);
 	_button->onClick(load_level);
 	renderPreview();
+
+	Game::_audioHandler->stopAllSounds();
+	Game::_audioHandler->playSound(AudioHandler::CUTSCENE);
+
 }
 
 void LevelSelectState::renderPreview() {
@@ -138,6 +143,9 @@ void LevelSelectState::handleInput(SDL_Event& event, GameState*& nextState) {
 		}
 		else if (event.key.keysym.sym == SDLK_RIGHT) {
 			inc_iterator(nullptr);
+		}
+		else if (event.key.keysym.sym == SDLK_ESCAPE){
+			_next = new MenuState(Game::_renderer);
 		}
 	}
 	_button->handleInput(event);
